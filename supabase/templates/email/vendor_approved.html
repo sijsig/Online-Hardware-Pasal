@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop Approved - Hardware Pasal</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; }
+    .header { background: #10b981; color: white; padding: 20px; border-radius: 8px 8px 0 0; }
+    .content { background: #fff; padding: 30px; border: 1px solid #e5e7eb; border-top: none; }
+    .footer { background: #f9fafb; padding: 20px; border-radius: 0 0 8px 8px; border: 1px solid #e5e7eb; border-top: none; text-align: center; color: #6b7280; font-size: 14px; }
+    .button { display: inline-block; background: #10b981; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: 500; }
+    .info-box { background: #d1fae5; border: 1px solid #a7f3d0; padding: 20px; border-radius: 8px; margin: 20px 0; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1 style="margin: 0;">🎉 Hardware Pasal</h1>
+    <p style="margin: 10px 0 0; opacity: 0.9;">Your Shop is Approved!</p>
+  </div>
+  
+  <div class="content">
+    <p>Hi {{shop_owner_name}},</p>
+    
+    <p>Congratulations! Your shop <strong>{{shop_name}}</strong> has been approved and is now live on Hardware Pasal.</p>
+    
+    <div class="info-box">
+      <h3 style="margin-top: 0;">What's Next?</h3>
+      <ul style="margin: 0; padding-left: 20px;">
+        <li>Add your products and inventory</li>
+        <li>Set your delivery zones and fees</li>
+        <li>Start receiving orders from nearby customers</li>
+      </ul>
+    </div>
+    
+    <p style="text-align: center; margin: 30px 0;">
+      <a href="{{vendor_dashboard_url}}" class="button">Go to Vendor Dashboard</a>
+    </p>
+    
+    <p>Welcome to Hardware Pasal! Our team is here to help you succeed.</p>
+  </div>
+  
+  <div class="footer">
+    <p>Hardware Pasal - Your Local Hardware Marketplace</p>
+    <p>support@hardwarepasal.com | +977-1-XXXXXXX</p>
+  </div>
+</body>
+</html>

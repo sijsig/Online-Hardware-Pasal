@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Cancelled - Hardware Pasal</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; }
+    .header { background: #ef4444; color: white; padding: 20px; border-radius: 8px 8px 0 0; }
+    .content { background: #fff; padding: 30px; border: 1px solid #e5e7eb; border-top: none; }
+    .footer { background: #f9fafb; padding: 20px; border-radius: 0 0 8px 8px; border: 1px solid #e5e7eb; border-top: none; text-align: center; color: #6b7280; font-size: 14px; }
+    .status-badge { display: inline-block; background: #fee2e2; color: #991b1b; padding: 4px 12px; border-radius: 9999px; font-size: 14px; font-weight: 500; }
+    .button { display: inline-block; background: #ea580c; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: 500; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1 style="margin: 0;">❌ Hardware Pasal</h1>
+    <p style="margin: 10px 0 0; opacity: 0.9;">Order Cancelled</p>
+  </div>
+  
+  <div class="content">
+    <p>Hi {{customer_name}},</p>
+    
+    <p>Your order <strong>#{{order_id_short}}</strong> has been cancelled.</p>
+    
+    <span class="status-badge">Cancelled</span>
+    
+    <p><strong>Reason:</strong> {{cancellation_reason}}</p>
+    
+    {{#if refund_amount}}
+    <p>Your refund of <strong>Rs. {{refund_amount}}</strong> will be processed back to your original payment method within 5-7 business days.</p>
+    {{/if}}
+    
+    <p style="text-align: center; margin: 30px 0;">
+      <a href="{{shop_url}}" class="button">Continue Shopping</a>
+    </p>
+    
+    <p>We're sorry for any inconvenience. If you have questions, please contact support.</p>
+  </div>
+  
+  <div class="footer">
+    <p>Hardware Pasal - Your Local Hardware Marketplace</p>
+    <p>support@hardwarepasal.com | +977-1-XXXXXXX</p>
+  </div>
+</body>
+</html>

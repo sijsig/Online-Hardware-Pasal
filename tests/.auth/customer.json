@@ -1,0 +1,35 @@
+{
+  "cookies": [
+    {
+      "name": "sb-access-token",
+      "value": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImIyYjRiNTRjLTE5ZTUtNGM2NC05MDE2LTI4ZGJiYWYyODVkZCIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2hoYXZqbmZnZWRza3dvbWRicHNqLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiI1YTJlMDQ5Ny1lNzg3LTRiMDUtOWIyZS0yZGU3OTEwNWI2MzAiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzkzOTU4NzAxLCJpYXQiOjE3OTM5NTUxMDEsImVtYWlsIjoiY3VzdG9tZXJAdGVzdC5jb20iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6ImVtYWlsIiwicHJvdmlkZXJzIjpbImVtYWlsIl19LCJ1c2VyX21ldGFkYXRhIjp7ImVtYWlsX3ZlcmlmaWVkIjp0cnVlfSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJwYXNzd29yZCIsInRpbWVzdGFtcCI6MTc5Mzk1NTEwMX1dLCJzZXNzaW9uX2lkIjoiY2E0YzAxNTUtNzc1NS00Njc5LTk5NjEtNzgzOTg5NDFkZjg3IiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.yh-jJ2ktVN6gXUaCwW144C_6zLpycolXPLEIbzOtbzRaaZrXuU0RXPghba7xXD9oqSNcfncT0njiz9_d1vsfFg",
+      "domain": "localhost",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "sb-refresh-token",
+      "value": "xssfbomkrmlm",
+      "domain": "localhost",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    }
+  ],
+  "origins": [
+    {
+      "origin": "http://localhost:3000",
+      "localStorage": [
+        {
+          "name": "hardware-online-pasal-cart-v1",
+          "value": "[]"
+        }
+      ]
+    }
+  ]
+}

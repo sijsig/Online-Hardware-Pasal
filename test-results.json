@@ -1,0 +1,1103 @@
+{
+  "config": {
+    "argv": [
+      "/opt/homebrew/Cellar/node/22.1.0/bin/node",
+      "/Users/sijansigdel/Documents/Codex/OHP/OHP/node_modules/.bin/playwright",
+      "test",
+      "tests/specs/end-to-end.spec.ts"
+    ],
+    "configFile": "/Users/sijansigdel/Documents/Codex/OHP/OHP/playwright.config.ts",
+    "rootDir": "/Users/sijansigdel/Documents/Codex/OHP/OHP/tests",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": "/Users/sijansigdel/Documents/Codex/OHP/OHP/tests/global-setup.ts",
+    "globalTeardown": "/Users/sijansigdel/Documents/Codex/OHP/OHP/tests/global-teardown.ts",
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 2
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/sijansigdel/Documents/Codex/OHP/OHP/test-results",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "setup",
+        "name": "setup",
+        "testDir": "/Users/sijansigdel/Documents/Codex/OHP/OHP/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/.*\\.setup\\.ts/"
+        ],
+        "timeout": 120000
+      },
+      {
+        "outputDir": "/Users/sijansigdel/Documents/Codex/OHP/OHP/test-results",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Users/sijansigdel/Documents/Codex/OHP/OHP/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 120000
+      },
+      {
+        "outputDir": "/Users/sijansigdel/Documents/Codex/OHP/OHP/test-results",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "mobile-chrome",
+        "name": "mobile-chrome",
+        "testDir": "/Users/sijansigdel/Documents/Codex/OHP/OHP/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 120000
+      }
+    ],
+    "filteredProjects": [
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/Users/sijansigdel/Documents/Codex/OHP/OHP/test-results",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "name": "setup",
+        "testDir": "/Users/sijansigdel/Documents/Codex/OHP/OHP/tests",
+        "snapshotDir": "/Users/sijansigdel/Documents/Codex/OHP/OHP/tests",
+        "testIgnore": [],
+        "testMatch": {},
+        "timeout": 120000,
+        "use": {
+          "baseURL": "http://localhost:3000",
+          "trace": "on-first-retry",
+          "screenshot": "only-on-failure",
+          "video": "retain-on-failure",
+          "actionTimeout": 30000,
+          "navigationTimeout": 60000
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "setup"
+      },
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/Users/sijansigdel/Documents/Codex/OHP/OHP/test-results",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "name": "chromium",
+        "testDir": "/Users/sijansigdel/Documents/Codex/OHP/OHP/tests",
+        "snapshotDir": "/Users/sijansigdel/Documents/Codex/OHP/OHP/tests",
+        "testIgnore": [],
+        "testMatch": "**/*.@(spec|test).?(c|m)[jt]s?(x)",
+        "timeout": 120000,
+        "use": {
+          "baseURL": "http://localhost:3000",
+          "trace": "on-first-retry",
+          "screenshot": "only-on-failure",
+          "video": "retain-on-failure",
+          "actionTimeout": 30000,
+          "navigationTimeout": 60000,
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Safari/537.36",
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "screen": {
+            "width": 1920,
+            "height": 1080
+          },
+          "deviceScaleFactor": 1,
+          "isMobile": false,
+          "hasTouch": false,
+          "defaultBrowserType": "chromium"
+        },
+        "dependencies": [
+          "setup"
+        ],
+        "ignoreSnapshots": false,
+        "__projectId": "chromium"
+      },
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/Users/sijansigdel/Documents/Codex/OHP/OHP/test-results",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "name": "mobile-chrome",
+        "testDir": "/Users/sijansigdel/Documents/Codex/OHP/OHP/tests",
+        "snapshotDir": "/Users/sijansigdel/Documents/Codex/OHP/OHP/tests",
+        "testIgnore": [],
+        "testMatch": "**/*.@(spec|test).?(c|m)[jt]s?(x)",
+        "timeout": 120000,
+        "use": {
+          "baseURL": "http://localhost:3000",
+          "trace": "on-first-retry",
+          "screenshot": "only-on-failure",
+          "video": "retain-on-failure",
+          "actionTimeout": 30000,
+          "navigationTimeout": 60000,
+          "userAgent": "Mozilla/5.0 (Linux; Android 11; Pixel 5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Mobile Safari/537.36",
+          "viewport": {
+            "width": 393,
+            "height": 727
+          },
+          "screen": {
+            "width": 393,
+            "height": 851
+          },
+          "deviceScaleFactor": 2.75,
+          "isMobile": true,
+          "hasTouch": true,
+          "defaultBrowserType": "chromium"
+        },
+        "dependencies": [
+          "setup"
+        ],
+        "ignoreSnapshots": false,
+        "__projectId": "mobile-chrome"
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "html",
+        {
+          "outputFolder": "playwright-report",
+          "open": "never"
+        }
+      ],
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "default",
+    "updateSourceMethod": "patch",
+    "version": "1.64.1",
+    "workers": 2,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "auth.setup.ts",
+      "file": "auth.setup.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "authenticate as customer",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "setup",
+              "projectName": "setup",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3692,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "Setting up auth for customer...\n"
+                    },
+                    {
+                      "text": "Auth saved for customer\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T11:31:19.589Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "17e3fe6f4d9d8bd79c6b-bbc326c4dbec0613ec65",
+          "file": "auth.setup.ts",
+          "line": 52,
+          "column": 8
+        },
+        {
+          "title": "authenticate as vendor",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "setup",
+              "projectName": "setup",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3814,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "Setting up auth for vendor...\n"
+                    },
+                    {
+                      "text": "Auth saved for vendor\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T11:31:19.584Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "17e3fe6f4d9d8bd79c6b-3bc025dd0695f3e1740f",
+          "file": "auth.setup.ts",
+          "line": 52,
+          "column": 8
+        },
+        {
+          "title": "authenticate as admin",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "setup",
+              "projectName": "setup",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3351,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "Setting up auth for admin...\n"
+                    },
+                    {
+                      "text": "Auth saved for admin\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T11:31:23.390Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "17e3fe6f4d9d8bd79c6b-1580989d32f149e984ed",
+          "file": "auth.setup.ts",
+          "line": 52,
+          "column": 8
+        },
+        {
+          "title": "authenticate as rider",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "setup",
+              "projectName": "setup",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3360,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "Setting up auth for rider...\n"
+                    },
+                    {
+                      "text": "Auth saved for rider\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T11:31:23.509Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "17e3fe6f4d9d8bd79c6b-6d48e227b28093959aa9",
+          "file": "auth.setup.ts",
+          "line": 52,
+          "column": 8
+        },
+        {
+          "title": "authenticate as new vendor",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "setup",
+              "projectName": "setup",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 391,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "Setting up auth for new vendor...\n"
+                    }
+                  ],
+                  "stderr": [
+                    {
+                      "text": "Failed to setup new vendor auth: Error: Failed to signup new vendor: email rate limit exceeded\n    at \u001b[90m/Users/sijansigdel/Documents/Codex/OHP/OHP/\u001b[39mtests/auth.setup.ts:145:13\n\u001b[90m    at processTicksAndRejections (node:internal/process/task_queues:95:5)\u001b[39m\n    at \u001b[90m/Users/sijansigdel/Documents/Codex/OHP/OHP/\u001b[39mnode_modules/\u001b[4mplaywright\u001b[24m/lib/worker/workerProcessEntry.js:1654:9\n    at \u001b[90m/Users/sijansigdel/Documents/Codex/OHP/OHP/\u001b[39mnode_modules/\u001b[4mplaywright\u001b[24m/lib/worker/workerProcessEntry.js:1134:11\n    at TimeoutManager.withRunnable \u001b[90m(/Users/sijansigdel/Documents/Codex/OHP/OHP/\u001b[39mnode_modules/\u001b[4mplaywright\u001b[24m/lib/worker/workerProcessEntry.js:403:14\u001b[90m)\u001b[39m\n    at TestInfoImpl._runWithTimeout \u001b[90m(/Users/sijansigdel/Documents/Codex/OHP/OHP/\u001b[39mnode_modules/\u001b[4mplaywright\u001b[24m/lib/worker/workerProcessEntry.js:1132:7\u001b[90m)\u001b[39m\n    at \u001b[90m/Users/sijansigdel/Documents/Codex/OHP/OHP/\u001b[39mnode_modules/\u001b[4mplaywright\u001b[24m/lib/worker/workerProcessEntry.js:1652:7\n    at WorkerMain._runTest \u001b[90m(/Users/sijansigdel/Documents/Codex/OHP/OHP/\u001b[39mnode_modules/\u001b[4mplaywright\u001b[24m/lib/worker/workerProcessEntry.js:1625:5\u001b[90m)\u001b[39m\n    at WorkerMain.runTestGroup \u001b[90m(/Users/sijansigdel/Documents/Codex/OHP/OHP/\u001b[39mnode_modules/\u001b[4mplaywright\u001b[24m/lib/worker/workerProcessEntry.js:1520:9\u001b[90m)\u001b[39m\n    at process.<anonymous> \u001b[90m(/Users/sijansigdel/Documents/Codex/OHP/OHP/\u001b[39mnode_modules/\u001b[4mplaywright\u001b[24m/lib/common/index.js:1955:25\u001b[90m)\u001b[39m\n"
+                    }
+                  ],
+                  "retry": 0,
+                  "startTime": "2026-11-06T11:31:26.749Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "17e3fe6f4d9d8bd79c6b-4b3297e9c8cfd14c6232",
+          "file": "auth.setup.ts",
+          "line": 118,
+          "column": 6
+        }
+      ]
+    },
+    {
+      "title": "specs/end-to-end.spec.ts",
+      "file": "specs/end-to-end.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Complete End-to-End Flow",
+          "file": "specs/end-to-end.spec.ts",
+          "line": 30,
+          "column": 6,
+          "specs": [
+            {
+              "title": "complete order flow: customer -> vendor -> rider -> admin",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 300000,
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "location": {
+                        "file": "/Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts",
+                        "line": 65,
+                        "column": 14
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "skipped",
+                      "duration": 2995,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-06T11:31:27.487Z",
+                      "annotations": [
+                        {
+                          "type": "skip",
+                          "location": {
+                            "file": "/Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts",
+                            "line": 65,
+                            "column": 14
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "c2bdba43fa9eae5a7aab-467343011cba916557c1",
+              "file": "specs/end-to-end.spec.ts",
+              "line": 49,
+              "column": 7
+            },
+            {
+              "title": "vendor creates shop and gets approved by admin",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 300000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 33304,
+                      "error": {
+                        "message": "TimeoutError: page.fill: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[name=\"name\"]')\u001b[22m\n",
+                        "stack": "TimeoutError: page.fill: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[name=\"name\"]')\u001b[22m\n\n    at /Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts:198:27",
+                        "location": {
+                          "file": "/Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts",
+                          "column": 27,
+                          "line": 198
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 196 |\u001b[39m       \u001b[90m// Apply for vendor - use correct form field names\u001b[39m\n \u001b[90m 197 |\u001b[39m       \u001b[36mawait\u001b[39m newVendorPage\u001b[33m.\u001b[39mgoto(\u001b[32m'/vendor'\u001b[39m\u001b[33m,\u001b[39m { waitUntil\u001b[33m:\u001b[39m \u001b[32m'networkidle'\u001b[39m })\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 198 |\u001b[39m       \u001b[36mawait\u001b[39m newVendorPage\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"name\"]'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'E2E Test Hardware'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 199 |\u001b[39m       \u001b[36mawait\u001b[39m newVendorPage\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"phone\"]'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'9800000003'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 200 |\u001b[39m       \u001b[36mawait\u001b[39m newVendorPage\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"email\"]'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'shop@e2etest.com'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 201 |\u001b[39m       \u001b[36mawait\u001b[39m newVendorPage\u001b[33m.\u001b[39mfill(\u001b[32m'textarea[name=\"address\"]'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'Kathmandu, Nepal'\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts",
+                            "column": 27,
+                            "line": 198
+                          },
+                          "message": "TimeoutError: page.fill: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[name=\"name\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 196 |\u001b[39m       \u001b[90m// Apply for vendor - use correct form field names\u001b[39m\n \u001b[90m 197 |\u001b[39m       \u001b[36mawait\u001b[39m newVendorPage\u001b[33m.\u001b[39mgoto(\u001b[32m'/vendor'\u001b[39m\u001b[33m,\u001b[39m { waitUntil\u001b[33m:\u001b[39m \u001b[32m'networkidle'\u001b[39m })\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 198 |\u001b[39m       \u001b[36mawait\u001b[39m newVendorPage\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"name\"]'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'E2E Test Hardware'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 199 |\u001b[39m       \u001b[36mawait\u001b[39m newVendorPage\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"phone\"]'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'9800000003'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 200 |\u001b[39m       \u001b[36mawait\u001b[39m newVendorPage\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"email\"]'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'shop@e2etest.com'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 201 |\u001b[39m       \u001b[36mawait\u001b[39m newVendorPage\u001b[33m.\u001b[39mfill(\u001b[32m'textarea[name=\"address\"]'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'Kathmandu, Nepal'\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts:198:27\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-06T11:31:27.487Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/sijansigdel/Documents/Codex/OHP/OHP/test-results/specs-end-to-end-Complete--673be--and-gets-approved-by-admin-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/sijansigdel/Documents/Codex/OHP/OHP/test-results/specs-end-to-end-Complete--673be--and-gets-approved-by-admin-chromium/video.webm"
+                        },
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/sijansigdel/Documents/Codex/OHP/OHP/test-results/specs-end-to-end-Complete--673be--and-gets-approved-by-admin-chromium/test-failed-2.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/sijansigdel/Documents/Codex/OHP/OHP/test-results/specs-end-to-end-Complete--673be--and-gets-approved-by-admin-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts",
+                        "column": 27,
+                        "line": 198
+                      }
+                    },
+                    {
+                      "workerIndex": 10,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 214,
+                      "error": {
+                        "message": "SyntaxError: Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON",
+                        "stack": "SyntaxError: Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON\n    at createAuthContext (/Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts:19:16)\n    at /Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts:160:64",
+                        "location": {
+                          "file": "/Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts",
+                          "column": 16,
+                          "line": 19
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 17 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m   \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 19 |\u001b[39m   \u001b[36mconst\u001b[39m data \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m response\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 20 |\u001b[39m   \u001b[36mif\u001b[39m (data\u001b[33m.\u001b[39msuccess \u001b[33m&&\u001b[39m data\u001b[33m.\u001b[39mdata\u001b[33m.\u001b[39msession) {\n \u001b[90m 21 |\u001b[39m     \u001b[36mawait\u001b[39m context\u001b[33m.\u001b[39maddCookies([\n \u001b[90m 22 |\u001b[39m       { name\u001b[33m:\u001b[39m \u001b[32m'sb-access-token'\u001b[39m\u001b[33m,\u001b[39m value\u001b[33m:\u001b[39m data\u001b[33m.\u001b[39mdata\u001b[33m.\u001b[39msession\u001b[33m.\u001b[39maccess_token\u001b[33m,\u001b[39m domain\u001b[33m:\u001b[39m \u001b[32m'localhost'\u001b[39m\u001b[33m,\u001b[39m path\u001b[33m:\u001b[39m \u001b[32m'/'\u001b[39m\u001b[33m,\u001b[39m httpOnly\u001b[33m:\u001b[39m \u001b[36mfalse\u001b[39m\u001b[33m,\u001b[39m secure\u001b[33m:\u001b[39m \u001b[36mfalse\u001b[39m\u001b[33m,\u001b[39m sameSite\u001b[33m:\u001b[39m \u001b[32m'Lax'\u001b[39m }\u001b[33m,\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts",
+                            "column": 16,
+                            "line": 19
+                          },
+                          "message": "SyntaxError: Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON\n\n\u001b[0m \u001b[90m 17 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m   \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 19 |\u001b[39m   \u001b[36mconst\u001b[39m data \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m response\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 20 |\u001b[39m   \u001b[36mif\u001b[39m (data\u001b[33m.\u001b[39msuccess \u001b[33m&&\u001b[39m data\u001b[33m.\u001b[39mdata\u001b[33m.\u001b[39msession) {\n \u001b[90m 21 |\u001b[39m     \u001b[36mawait\u001b[39m context\u001b[33m.\u001b[39maddCookies([\n \u001b[90m 22 |\u001b[39m       { name\u001b[33m:\u001b[39m \u001b[32m'sb-access-token'\u001b[39m\u001b[33m,\u001b[39m value\u001b[33m:\u001b[39m data\u001b[33m.\u001b[39mdata\u001b[33m.\u001b[39msession\u001b[33m.\u001b[39maccess_token\u001b[33m,\u001b[39m domain\u001b[33m:\u001b[39m \u001b[32m'localhost'\u001b[39m\u001b[33m,\u001b[39m path\u001b[33m:\u001b[39m \u001b[32m'/'\u001b[39m\u001b[33m,\u001b[39m httpOnly\u001b[33m:\u001b[39m \u001b[36mfalse\u001b[39m\u001b[33m,\u001b[39m secure\u001b[33m:\u001b[39m \u001b[36mfalse\u001b[39m\u001b[33m,\u001b[39m sameSite\u001b[33m:\u001b[39m \u001b[32m'Lax'\u001b[39m }\u001b[33m,\u001b[39m\u001b[0m\n\u001b[2m    at createAuthContext (/Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts:19:16)\u001b[22m\n\u001b[2m    at /Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts:160:64\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2026-11-06T11:32:01.215Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/sijansigdel/Documents/Codex/OHP/OHP/test-results/specs-end-to-end-Complete--673be--and-gets-approved-by-admin-chromium-retry1/test-failed-2.png"
+                        },
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/sijansigdel/Documents/Codex/OHP/OHP/test-results/specs-end-to-end-Complete--673be--and-gets-approved-by-admin-chromium-retry1/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/sijansigdel/Documents/Codex/OHP/OHP/test-results/specs-end-to-end-Complete--673be--and-gets-approved-by-admin-chromium-retry1/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/sijansigdel/Documents/Codex/OHP/OHP/test-results/specs-end-to-end-Complete--673be--and-gets-approved-by-admin-chromium-retry1/error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/sijansigdel/Documents/Codex/OHP/OHP/test-results/specs-end-to-end-Complete--673be--and-gets-approved-by-admin-chromium-retry1/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts",
+                        "column": 16,
+                        "line": 19
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "c2bdba43fa9eae5a7aab-986d2b5accece10d3ea7",
+              "file": "specs/end-to-end.spec.ts",
+              "line": 156,
+              "column": 7
+            },
+            {
+              "title": "complete order flow: customer -> vendor -> rider -> admin",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 300000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 231,
+                      "error": {
+                        "message": "SyntaxError: Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON",
+                        "stack": "SyntaxError: Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON\n    at createAuthContext (/Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts:19:16)\n    at /Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts:53:62",
+                        "location": {
+                          "file": "/Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts",
+                          "column": 16,
+                          "line": 19
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 17 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m   \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 19 |\u001b[39m   \u001b[36mconst\u001b[39m data \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m response\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 20 |\u001b[39m   \u001b[36mif\u001b[39m (data\u001b[33m.\u001b[39msuccess \u001b[33m&&\u001b[39m data\u001b[33m.\u001b[39mdata\u001b[33m.\u001b[39msession) {\n \u001b[90m 21 |\u001b[39m     \u001b[36mawait\u001b[39m context\u001b[33m.\u001b[39maddCookies([\n \u001b[90m 22 |\u001b[39m       { name\u001b[33m:\u001b[39m \u001b[32m'sb-access-token'\u001b[39m\u001b[33m,\u001b[39m value\u001b[33m:\u001b[39m data\u001b[33m.\u001b[39mdata\u001b[33m.\u001b[39msession\u001b[33m.\u001b[39maccess_token\u001b[33m,\u001b[39m domain\u001b[33m:\u001b[39m \u001b[32m'localhost'\u001b[39m\u001b[33m,\u001b[39m path\u001b[33m:\u001b[39m \u001b[32m'/'\u001b[39m\u001b[33m,\u001b[39m httpOnly\u001b[33m:\u001b[39m \u001b[36mfalse\u001b[39m\u001b[33m,\u001b[39m secure\u001b[33m:\u001b[39m \u001b[36mfalse\u001b[39m\u001b[33m,\u001b[39m sameSite\u001b[33m:\u001b[39m \u001b[32m'Lax'\u001b[39m }\u001b[33m,\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts",
+                            "column": 16,
+                            "line": 19
+                          },
+                          "message": "SyntaxError: Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON\n\n\u001b[0m \u001b[90m 17 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m   \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 19 |\u001b[39m   \u001b[36mconst\u001b[39m data \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m response\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 20 |\u001b[39m   \u001b[36mif\u001b[39m (data\u001b[33m.\u001b[39msuccess \u001b[33m&&\u001b[39m data\u001b[33m.\u001b[39mdata\u001b[33m.\u001b[39msession) {\n \u001b[90m 21 |\u001b[39m     \u001b[36mawait\u001b[39m context\u001b[33m.\u001b[39maddCookies([\n \u001b[90m 22 |\u001b[39m       { name\u001b[33m:\u001b[39m \u001b[32m'sb-access-token'\u001b[39m\u001b[33m,\u001b[39m value\u001b[33m:\u001b[39m data\u001b[33m.\u001b[39mdata\u001b[33m.\u001b[39msession\u001b[33m.\u001b[39maccess_token\u001b[33m,\u001b[39m domain\u001b[33m:\u001b[39m \u001b[32m'localhost'\u001b[39m\u001b[33m,\u001b[39m path\u001b[33m:\u001b[39m \u001b[32m'/'\u001b[39m\u001b[33m,\u001b[39m httpOnly\u001b[33m:\u001b[39m \u001b[36mfalse\u001b[39m\u001b[33m,\u001b[39m secure\u001b[33m:\u001b[39m \u001b[36mfalse\u001b[39m\u001b[33m,\u001b[39m sameSite\u001b[33m:\u001b[39m \u001b[32m'Lax'\u001b[39m }\u001b[33m,\u001b[39m\u001b[0m\n\u001b[2m    at createAuthContext (/Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts:19:16)\u001b[22m\n\u001b[2m    at /Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts:53:62\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-06T11:31:41.191Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/sijansigdel/Documents/Codex/OHP/OHP/test-results/specs-end-to-end-Complete--af2ce-er---vendor---rider---admin-mobile-chrome/test-failed-2.png"
+                        },
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/sijansigdel/Documents/Codex/OHP/OHP/test-results/specs-end-to-end-Complete--af2ce-er---vendor---rider---admin-mobile-chrome/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/sijansigdel/Documents/Codex/OHP/OHP/test-results/specs-end-to-end-Complete--af2ce-er---vendor---rider---admin-mobile-chrome/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/sijansigdel/Documents/Codex/OHP/OHP/test-results/specs-end-to-end-Complete--af2ce-er---vendor---rider---admin-mobile-chrome/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts",
+                        "column": 16,
+                        "line": 19
+                      }
+                    },
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 238,
+                      "error": {
+                        "message": "SyntaxError: Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON",
+                        "stack": "SyntaxError: Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON\n    at createAuthContext (/Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts:19:16)\n    at /Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts:53:62",
+                        "location": {
+                          "file": "/Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts",
+                          "column": 16,
+                          "line": 19
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 17 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m   \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 19 |\u001b[39m   \u001b[36mconst\u001b[39m data \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m response\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 20 |\u001b[39m   \u001b[36mif\u001b[39m (data\u001b[33m.\u001b[39msuccess \u001b[33m&&\u001b[39m data\u001b[33m.\u001b[39mdata\u001b[33m.\u001b[39msession) {\n \u001b[90m 21 |\u001b[39m     \u001b[36mawait\u001b[39m context\u001b[33m.\u001b[39maddCookies([\n \u001b[90m 22 |\u001b[39m       { name\u001b[33m:\u001b[39m \u001b[32m'sb-access-token'\u001b[39m\u001b[33m,\u001b[39m value\u001b[33m:\u001b[39m data\u001b[33m.\u001b[39mdata\u001b[33m.\u001b[39msession\u001b[33m.\u001b[39maccess_token\u001b[33m,\u001b[39m domain\u001b[33m:\u001b[39m \u001b[32m'localhost'\u001b[39m\u001b[33m,\u001b[39m path\u001b[33m:\u001b[39m \u001b[32m'/'\u001b[39m\u001b[33m,\u001b[39m httpOnly\u001b[33m:\u001b[39m \u001b[36mfalse\u001b[39m\u001b[33m,\u001b[39m secure\u001b[33m:\u001b[39m \u001b[36mfalse\u001b[39m\u001b[33m,\u001b[39m sameSite\u001b[33m:\u001b[39m \u001b[32m'Lax'\u001b[39m }\u001b[33m,\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts",
+                            "column": 16,
+                            "line": 19
+                          },
+                          "message": "SyntaxError: Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON\n\n\u001b[0m \u001b[90m 17 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m   \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 19 |\u001b[39m   \u001b[36mconst\u001b[39m data \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m response\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 20 |\u001b[39m   \u001b[36mif\u001b[39m (data\u001b[33m.\u001b[39msuccess \u001b[33m&&\u001b[39m data\u001b[33m.\u001b[39mdata\u001b[33m.\u001b[39msession) {\n \u001b[90m 21 |\u001b[39m     \u001b[36mawait\u001b[39m context\u001b[33m.\u001b[39maddCookies([\n \u001b[90m 22 |\u001b[39m       { name\u001b[33m:\u001b[39m \u001b[32m'sb-access-token'\u001b[39m\u001b[33m,\u001b[39m value\u001b[33m:\u001b[39m data\u001b[33m.\u001b[39mdata\u001b[33m.\u001b[39msession\u001b[33m.\u001b[39maccess_token\u001b[33m,\u001b[39m domain\u001b[33m:\u001b[39m \u001b[32m'localhost'\u001b[39m\u001b[33m,\u001b[39m path\u001b[33m:\u001b[39m \u001b[32m'/'\u001b[39m\u001b[33m,\u001b[39m httpOnly\u001b[33m:\u001b[39m \u001b[36mfalse\u001b[39m\u001b[33m,\u001b[39m secure\u001b[33m:\u001b[39m \u001b[36mfalse\u001b[39m\u001b[33m,\u001b[39m sameSite\u001b[33m:\u001b[39m \u001b[32m'Lax'\u001b[39m }\u001b[33m,\u001b[39m\u001b[0m\n\u001b[2m    at createAuthContext (/Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts:19:16)\u001b[22m\n\u001b[2m    at /Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts:53:62\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2026-11-06T11:31:41.845Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/sijansigdel/Documents/Codex/OHP/OHP/test-results/specs-end-to-end-Complete--af2ce-er---vendor---rider---admin-mobile-chrome-retry1/test-failed-1.png"
+                        },
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/sijansigdel/Documents/Codex/OHP/OHP/test-results/specs-end-to-end-Complete--af2ce-er---vendor---rider---admin-mobile-chrome-retry1/test-failed-2.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/sijansigdel/Documents/Codex/OHP/OHP/test-results/specs-end-to-end-Complete--af2ce-er---vendor---rider---admin-mobile-chrome-retry1/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/sijansigdel/Documents/Codex/OHP/OHP/test-results/specs-end-to-end-Complete--af2ce-er---vendor---rider---admin-mobile-chrome-retry1/error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/sijansigdel/Documents/Codex/OHP/OHP/test-results/specs-end-to-end-Complete--af2ce-er---vendor---rider---admin-mobile-chrome-retry1/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts",
+                        "column": 16,
+                        "line": 19
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "c2bdba43fa9eae5a7aab-dc43308f3750eff69c9d",
+              "file": "specs/end-to-end.spec.ts",
+              "line": 49,
+              "column": 7
+            },
+            {
+              "title": "vendor creates shop and gets approved by admin",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 300000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 221,
+                      "error": {
+                        "message": "SyntaxError: Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON",
+                        "stack": "SyntaxError: Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON\n    at createAuthContext (/Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts:19:16)\n    at /Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts:160:64",
+                        "location": {
+                          "file": "/Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts",
+                          "column": 16,
+                          "line": 19
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 17 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m   \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 19 |\u001b[39m   \u001b[36mconst\u001b[39m data \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m response\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 20 |\u001b[39m   \u001b[36mif\u001b[39m (data\u001b[33m.\u001b[39msuccess \u001b[33m&&\u001b[39m data\u001b[33m.\u001b[39mdata\u001b[33m.\u001b[39msession) {\n \u001b[90m 21 |\u001b[39m     \u001b[36mawait\u001b[39m context\u001b[33m.\u001b[39maddCookies([\n \u001b[90m 22 |\u001b[39m       { name\u001b[33m:\u001b[39m \u001b[32m'sb-access-token'\u001b[39m\u001b[33m,\u001b[39m value\u001b[33m:\u001b[39m data\u001b[33m.\u001b[39mdata\u001b[33m.\u001b[39msession\u001b[33m.\u001b[39maccess_token\u001b[33m,\u001b[39m domain\u001b[33m:\u001b[39m \u001b[32m'localhost'\u001b[39m\u001b[33m,\u001b[39m path\u001b[33m:\u001b[39m \u001b[32m'/'\u001b[39m\u001b[33m,\u001b[39m httpOnly\u001b[33m:\u001b[39m \u001b[36mfalse\u001b[39m\u001b[33m,\u001b[39m secure\u001b[33m:\u001b[39m \u001b[36mfalse\u001b[39m\u001b[33m,\u001b[39m sameSite\u001b[33m:\u001b[39m \u001b[32m'Lax'\u001b[39m }\u001b[33m,\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts",
+                            "column": 16,
+                            "line": 19
+                          },
+                          "message": "SyntaxError: Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON\n\n\u001b[0m \u001b[90m 17 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m   \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 19 |\u001b[39m   \u001b[36mconst\u001b[39m data \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m response\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 20 |\u001b[39m   \u001b[36mif\u001b[39m (data\u001b[33m.\u001b[39msuccess \u001b[33m&&\u001b[39m data\u001b[33m.\u001b[39mdata\u001b[33m.\u001b[39msession) {\n \u001b[90m 21 |\u001b[39m     \u001b[36mawait\u001b[39m context\u001b[33m.\u001b[39maddCookies([\n \u001b[90m 22 |\u001b[39m       { name\u001b[33m:\u001b[39m \u001b[32m'sb-access-token'\u001b[39m\u001b[33m,\u001b[39m value\u001b[33m:\u001b[39m data\u001b[33m.\u001b[39mdata\u001b[33m.\u001b[39msession\u001b[33m.\u001b[39maccess_token\u001b[33m,\u001b[39m domain\u001b[33m:\u001b[39m \u001b[32m'localhost'\u001b[39m\u001b[33m,\u001b[39m path\u001b[33m:\u001b[39m \u001b[32m'/'\u001b[39m\u001b[33m,\u001b[39m httpOnly\u001b[33m:\u001b[39m \u001b[36mfalse\u001b[39m\u001b[33m,\u001b[39m secure\u001b[33m:\u001b[39m \u001b[36mfalse\u001b[39m\u001b[33m,\u001b[39m sameSite\u001b[33m:\u001b[39m \u001b[32m'Lax'\u001b[39m }\u001b[33m,\u001b[39m\u001b[0m\n\u001b[2m    at createAuthContext (/Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts:19:16)\u001b[22m\n\u001b[2m    at /Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts:160:64\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-06T11:31:42.533Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/sijansigdel/Documents/Codex/OHP/OHP/test-results/specs-end-to-end-Complete--673be--and-gets-approved-by-admin-mobile-chrome/test-failed-1.png"
+                        },
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/sijansigdel/Documents/Codex/OHP/OHP/test-results/specs-end-to-end-Complete--673be--and-gets-approved-by-admin-mobile-chrome/test-failed-2.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/sijansigdel/Documents/Codex/OHP/OHP/test-results/specs-end-to-end-Complete--673be--and-gets-approved-by-admin-mobile-chrome/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/sijansigdel/Documents/Codex/OHP/OHP/test-results/specs-end-to-end-Complete--673be--and-gets-approved-by-admin-mobile-chrome/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts",
+                        "column": 16,
+                        "line": 19
+                      }
+                    },
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 237,
+                      "error": {
+                        "message": "SyntaxError: Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON",
+                        "stack": "SyntaxError: Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON\n    at createAuthContext (/Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts:19:16)\n    at /Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts:160:64",
+                        "location": {
+                          "file": "/Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts",
+                          "column": 16,
+                          "line": 19
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 17 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m   \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 19 |\u001b[39m   \u001b[36mconst\u001b[39m data \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m response\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 20 |\u001b[39m   \u001b[36mif\u001b[39m (data\u001b[33m.\u001b[39msuccess \u001b[33m&&\u001b[39m data\u001b[33m.\u001b[39mdata\u001b[33m.\u001b[39msession) {\n \u001b[90m 21 |\u001b[39m     \u001b[36mawait\u001b[39m context\u001b[33m.\u001b[39maddCookies([\n \u001b[90m 22 |\u001b[39m       { name\u001b[33m:\u001b[39m \u001b[32m'sb-access-token'\u001b[39m\u001b[33m,\u001b[39m value\u001b[33m:\u001b[39m data\u001b[33m.\u001b[39mdata\u001b[33m.\u001b[39msession\u001b[33m.\u001b[39maccess_token\u001b[33m,\u001b[39m domain\u001b[33m:\u001b[39m \u001b[32m'localhost'\u001b[39m\u001b[33m,\u001b[39m path\u001b[33m:\u001b[39m \u001b[32m'/'\u001b[39m\u001b[33m,\u001b[39m httpOnly\u001b[33m:\u001b[39m \u001b[36mfalse\u001b[39m\u001b[33m,\u001b[39m secure\u001b[33m:\u001b[39m \u001b[36mfalse\u001b[39m\u001b[33m,\u001b[39m sameSite\u001b[33m:\u001b[39m \u001b[32m'Lax'\u001b[39m }\u001b[33m,\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts",
+                            "column": 16,
+                            "line": 19
+                          },
+                          "message": "SyntaxError: Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON\n\n\u001b[0m \u001b[90m 17 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m   \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 19 |\u001b[39m   \u001b[36mconst\u001b[39m data \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m response\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 20 |\u001b[39m   \u001b[36mif\u001b[39m (data\u001b[33m.\u001b[39msuccess \u001b[33m&&\u001b[39m data\u001b[33m.\u001b[39mdata\u001b[33m.\u001b[39msession) {\n \u001b[90m 21 |\u001b[39m     \u001b[36mawait\u001b[39m context\u001b[33m.\u001b[39maddCookies([\n \u001b[90m 22 |\u001b[39m       { name\u001b[33m:\u001b[39m \u001b[32m'sb-access-token'\u001b[39m\u001b[33m,\u001b[39m value\u001b[33m:\u001b[39m data\u001b[33m.\u001b[39mdata\u001b[33m.\u001b[39msession\u001b[33m.\u001b[39maccess_token\u001b[33m,\u001b[39m domain\u001b[33m:\u001b[39m \u001b[32m'localhost'\u001b[39m\u001b[33m,\u001b[39m path\u001b[33m:\u001b[39m \u001b[32m'/'\u001b[39m\u001b[33m,\u001b[39m httpOnly\u001b[33m:\u001b[39m \u001b[36mfalse\u001b[39m\u001b[33m,\u001b[39m secure\u001b[33m:\u001b[39m \u001b[36mfalse\u001b[39m\u001b[33m,\u001b[39m sameSite\u001b[33m:\u001b[39m \u001b[32m'Lax'\u001b[39m }\u001b[33m,\u001b[39m\u001b[0m\n\u001b[2m    at createAuthContext (/Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts:19:16)\u001b[22m\n\u001b[2m    at /Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts:160:64\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2026-11-06T11:31:43.178Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/sijansigdel/Documents/Codex/OHP/OHP/test-results/specs-end-to-end-Complete--673be--and-gets-approved-by-admin-mobile-chrome-retry1/test-failed-1.png"
+                        },
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/sijansigdel/Documents/Codex/OHP/OHP/test-results/specs-end-to-end-Complete--673be--and-gets-approved-by-admin-mobile-chrome-retry1/test-failed-2.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/sijansigdel/Documents/Codex/OHP/OHP/test-results/specs-end-to-end-Complete--673be--and-gets-approved-by-admin-mobile-chrome-retry1/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/sijansigdel/Documents/Codex/OHP/OHP/test-results/specs-end-to-end-Complete--673be--and-gets-approved-by-admin-mobile-chrome-retry1/error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/sijansigdel/Documents/Codex/OHP/OHP/test-results/specs-end-to-end-Complete--673be--and-gets-approved-by-admin-mobile-chrome-retry1/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts",
+                        "column": 16,
+                        "line": 19
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "c2bdba43fa9eae5a7aab-ca5d1c63f7c516636bc8",
+              "file": "specs/end-to-end.spec.ts",
+              "line": 156,
+              "column": 7
+            }
+          ]
+        },
+        {
+          "title": "Multi-role Data Consistency",
+          "file": "specs/end-to-end.spec.ts",
+          "line": 234,
+          "column": 6,
+          "specs": [
+            {
+              "title": "order status syncs across all roles",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 10257,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-06T11:31:30.592Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c2bdba43fa9eae5a7aab-a94dfb27dcac3127dbe7",
+              "file": "specs/end-to-end.spec.ts",
+              "line": 235,
+              "column": 7
+            },
+            {
+              "title": "order status syncs across all roles",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 8,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 129,
+                      "error": {
+                        "message": "SyntaxError: Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON",
+                        "stack": "SyntaxError: Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON\n    at createAuthContext (/Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts:19:16)\n    at /Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts:239:62",
+                        "location": {
+                          "file": "/Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts",
+                          "column": 16,
+                          "line": 19
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 17 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m   \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 19 |\u001b[39m   \u001b[36mconst\u001b[39m data \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m response\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 20 |\u001b[39m   \u001b[36mif\u001b[39m (data\u001b[33m.\u001b[39msuccess \u001b[33m&&\u001b[39m data\u001b[33m.\u001b[39mdata\u001b[33m.\u001b[39msession) {\n \u001b[90m 21 |\u001b[39m     \u001b[36mawait\u001b[39m context\u001b[33m.\u001b[39maddCookies([\n \u001b[90m 22 |\u001b[39m       { name\u001b[33m:\u001b[39m \u001b[32m'sb-access-token'\u001b[39m\u001b[33m,\u001b[39m value\u001b[33m:\u001b[39m data\u001b[33m.\u001b[39mdata\u001b[33m.\u001b[39msession\u001b[33m.\u001b[39maccess_token\u001b[33m,\u001b[39m domain\u001b[33m:\u001b[39m \u001b[32m'localhost'\u001b[39m\u001b[33m,\u001b[39m path\u001b[33m:\u001b[39m \u001b[32m'/'\u001b[39m\u001b[33m,\u001b[39m httpOnly\u001b[33m:\u001b[39m \u001b[36mfalse\u001b[39m\u001b[33m,\u001b[39m secure\u001b[33m:\u001b[39m \u001b[36mfalse\u001b[39m\u001b[33m,\u001b[39m sameSite\u001b[33m:\u001b[39m \u001b[32m'Lax'\u001b[39m }\u001b[33m,\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts",
+                            "column": 16,
+                            "line": 19
+                          },
+                          "message": "SyntaxError: Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON\n\n\u001b[0m \u001b[90m 17 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m   \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 19 |\u001b[39m   \u001b[36mconst\u001b[39m data \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m response\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 20 |\u001b[39m   \u001b[36mif\u001b[39m (data\u001b[33m.\u001b[39msuccess \u001b[33m&&\u001b[39m data\u001b[33m.\u001b[39mdata\u001b[33m.\u001b[39msession) {\n \u001b[90m 21 |\u001b[39m     \u001b[36mawait\u001b[39m context\u001b[33m.\u001b[39maddCookies([\n \u001b[90m 22 |\u001b[39m       { name\u001b[33m:\u001b[39m \u001b[32m'sb-access-token'\u001b[39m\u001b[33m,\u001b[39m value\u001b[33m:\u001b[39m data\u001b[33m.\u001b[39mdata\u001b[33m.\u001b[39msession\u001b[33m.\u001b[39maccess_token\u001b[33m,\u001b[39m domain\u001b[33m:\u001b[39m \u001b[32m'localhost'\u001b[39m\u001b[33m,\u001b[39m path\u001b[33m:\u001b[39m \u001b[32m'/'\u001b[39m\u001b[33m,\u001b[39m httpOnly\u001b[33m:\u001b[39m \u001b[36mfalse\u001b[39m\u001b[33m,\u001b[39m secure\u001b[33m:\u001b[39m \u001b[36mfalse\u001b[39m\u001b[33m,\u001b[39m sameSite\u001b[33m:\u001b[39m \u001b[32m'Lax'\u001b[39m }\u001b[33m,\u001b[39m\u001b[0m\n\u001b[2m    at createAuthContext (/Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts:19:16)\u001b[22m\n\u001b[2m    at /Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts:239:62\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-06T11:31:43.865Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/sijansigdel/Documents/Codex/OHP/OHP/test-results/specs-end-to-end-Multi-rol-62544-atus-syncs-across-all-roles-mobile-chrome/test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/sijansigdel/Documents/Codex/OHP/OHP/test-results/specs-end-to-end-Multi-rol-62544-atus-syncs-across-all-roles-mobile-chrome/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts",
+                        "column": 16,
+                        "line": 19
+                      }
+                    },
+                    {
+                      "workerIndex": 9,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 125,
+                      "error": {
+                        "message": "SyntaxError: Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON",
+                        "stack": "SyntaxError: Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON\n    at createAuthContext (/Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts:19:16)\n    at /Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts:239:62",
+                        "location": {
+                          "file": "/Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts",
+                          "column": 16,
+                          "line": 19
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 17 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m   \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 19 |\u001b[39m   \u001b[36mconst\u001b[39m data \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m response\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 20 |\u001b[39m   \u001b[36mif\u001b[39m (data\u001b[33m.\u001b[39msuccess \u001b[33m&&\u001b[39m data\u001b[33m.\u001b[39mdata\u001b[33m.\u001b[39msession) {\n \u001b[90m 21 |\u001b[39m     \u001b[36mawait\u001b[39m context\u001b[33m.\u001b[39maddCookies([\n \u001b[90m 22 |\u001b[39m       { name\u001b[33m:\u001b[39m \u001b[32m'sb-access-token'\u001b[39m\u001b[33m,\u001b[39m value\u001b[33m:\u001b[39m data\u001b[33m.\u001b[39mdata\u001b[33m.\u001b[39msession\u001b[33m.\u001b[39maccess_token\u001b[33m,\u001b[39m domain\u001b[33m:\u001b[39m \u001b[32m'localhost'\u001b[39m\u001b[33m,\u001b[39m path\u001b[33m:\u001b[39m \u001b[32m'/'\u001b[39m\u001b[33m,\u001b[39m httpOnly\u001b[33m:\u001b[39m \u001b[36mfalse\u001b[39m\u001b[33m,\u001b[39m secure\u001b[33m:\u001b[39m \u001b[36mfalse\u001b[39m\u001b[33m,\u001b[39m sameSite\u001b[33m:\u001b[39m \u001b[32m'Lax'\u001b[39m }\u001b[33m,\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts",
+                            "column": 16,
+                            "line": 19
+                          },
+                          "message": "SyntaxError: Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON\n\n\u001b[0m \u001b[90m 17 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m   \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 19 |\u001b[39m   \u001b[36mconst\u001b[39m data \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m response\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 20 |\u001b[39m   \u001b[36mif\u001b[39m (data\u001b[33m.\u001b[39msuccess \u001b[33m&&\u001b[39m data\u001b[33m.\u001b[39mdata\u001b[33m.\u001b[39msession) {\n \u001b[90m 21 |\u001b[39m     \u001b[36mawait\u001b[39m context\u001b[33m.\u001b[39maddCookies([\n \u001b[90m 22 |\u001b[39m       { name\u001b[33m:\u001b[39m \u001b[32m'sb-access-token'\u001b[39m\u001b[33m,\u001b[39m value\u001b[33m:\u001b[39m data\u001b[33m.\u001b[39mdata\u001b[33m.\u001b[39msession\u001b[33m.\u001b[39maccess_token\u001b[33m,\u001b[39m domain\u001b[33m:\u001b[39m \u001b[32m'localhost'\u001b[39m\u001b[33m,\u001b[39m path\u001b[33m:\u001b[39m \u001b[32m'/'\u001b[39m\u001b[33m,\u001b[39m httpOnly\u001b[33m:\u001b[39m \u001b[36mfalse\u001b[39m\u001b[33m,\u001b[39m secure\u001b[33m:\u001b[39m \u001b[36mfalse\u001b[39m\u001b[33m,\u001b[39m sameSite\u001b[33m:\u001b[39m \u001b[32m'Lax'\u001b[39m }\u001b[33m,\u001b[39m\u001b[0m\n\u001b[2m    at createAuthContext (/Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts:19:16)\u001b[22m\n\u001b[2m    at /Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts:239:62\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2026-11-06T11:31:44.418Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/sijansigdel/Documents/Codex/OHP/OHP/test-results/specs-end-to-end-Multi-rol-62544-atus-syncs-across-all-roles-mobile-chrome-retry1/test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/sijansigdel/Documents/Codex/OHP/OHP/test-results/specs-end-to-end-Multi-rol-62544-atus-syncs-across-all-roles-mobile-chrome-retry1/error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/sijansigdel/Documents/Codex/OHP/OHP/test-results/specs-end-to-end-Multi-rol-62544-atus-syncs-across-all-roles-mobile-chrome-retry1/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/sijansigdel/Documents/Codex/OHP/OHP/tests/specs/end-to-end.spec.ts",
+                        "column": 16,
+                        "line": 19
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "c2bdba43fa9eae5a7aab-ceb9a2951e37feda7f39",
+              "file": "specs/end-to-end.spec.ts",
+              "line": 235,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-06T11:31:18.550Z",
+    "duration": 43038.844,
+    "expected": 6,
+    "skipped": 1,
+    "unexpected": 4,
+    "flaky": 0
+  }
+}

@@ -1,0 +1,1 @@
+Hardware Pasal: Your order #{{order_id_short}} confirmed by {{shop_name}}. Total: Rs. {{total}}. Track: {{tracking_url}}

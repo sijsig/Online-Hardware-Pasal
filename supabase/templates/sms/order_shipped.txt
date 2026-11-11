@@ -1,0 +1,1 @@
+Hardware Pasal: Order #{{order_id_short}} shipped! Rider {{rider_name}} ({{rider_phone}}) is on the way. Track: {{tracking_url}} Est. delivery: {{estimated_delivery}}

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { OrderStatusTracker } from "@/components/customer/order-status-tracker";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Order details", robots: { index: false, follow: false } };
@@ -28,6 +29,13 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
     .order("created_at", { ascending: true });
   if (itemsError) console.error("Could not load order items:", itemsError.message);
 
+  const { data: history, error: historyError } = await supabase
+    .from("order_status_history")
+    .select("to_status, note, created_at")
+    .eq("order_id", id)
+    .order("created_at", { ascending: true });
+  if (historyError) console.error("Could not load order status history:", historyError.message);
+
   return (
     <main className="simple-page">
       <header className="product-page-header"><Link className="brand" href="/"><span className="brand-mark">H</span><span className="brand-name">hardware<span>pasal</span></span></Link><Link className="back-link" href="/account">Your account</Link></header>
@@ -36,7 +44,11 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
         <p className="section-kicker">Order received</p>
         <h1>Thanks, your order is placed.</h1>
         <p className="order-id">Order reference <strong>{order.id.slice(0, 8).toUpperCase()}</strong></p>
-        <div className="order-status-card"><span className="status-dot" /><div><strong>{order.status.replaceAll("_", " ")}</strong><small>We’ll update this page as the shop confirms your order.</small></div><span className="payment-method">Cash on delivery</span></div>
+        <OrderStatusTracker
+          orderId={order.id}
+          initialStatus={order.status}
+          initialHistory={(history ?? []).map((entry) => ({ status: entry.to_status, note: entry.note, createdAt: entry.created_at }))}
+        />
         <section className="order-items-card">
           <h2>Order summary</h2>
           {(items ?? []).map((item) => <div className="checkout-line" key={item.id}><span>{item.product_name_snapshot} × {item.quantity}<small>{npr.format(Number(item.unit_price_snapshot))} / {item.unit_snapshot}</small></span><strong>{npr.format(Number(item.line_total))}</strong></div>)}

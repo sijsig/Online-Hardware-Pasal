@@ -1,0 +1,1 @@
+Hardware Pasal: New delivery assigned! Order #{{order_id_short}} from {{shop_name}} to {{customer_area}}. Pick up by {{pickup_time}}. View: {{rider_app_url}}
