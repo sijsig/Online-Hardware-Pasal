@@ -55,31 +55,31 @@ select
     when p.email = 'shop1@test.com' then 'Kathmandu Hardware Store'
     when p.email = 'shop2@test.com' then 'Lalitpur Supply Co'
     else 'Bhaktapur Tools & Hardware'
-  end,
+  end as name,
   case 
     when p.email = 'shop1@test.com' then 'kathmandu-hardware-store'
     when p.email = 'shop2@test.com' then 'lalitpur-supply-co'
     else 'bhaktapur-tools'
-  end,
+  end as slug,
   case 
     when p.email = 'shop1@test.com' then 'Complete hardware solutions in Kathmandu valley'
     when p.email = 'shop2@test.com' then 'Quality plumbing and electrical supplies'
     else 'Specialized in power tools and construction materials'
-  end,
+  end as description,
   p.phone,
   p.email,
   case 
     when p.email = 'shop1@test.com' then 'New Road, Kathmandu'
     when p.email = 'shop2@test.com' then 'Pulchowk, Lalitpur'
     else 'Suryabinayak, Bhaktapur'
-  end,
+  end as address_line,
   case 
     when p.email = 'shop1@test.com' then 'Kathmandu'
     when p.email = 'shop2@test.com' then 'Lalitpur'
     else 'Bhaktapur'
-  end,
-  'Kathmandu',
-  'Bagmati',
+  end as city,
+  'Kathmandu' as district,
+  'Bagmati' as province,
   extensions.st_setsrid(
     extensions.st_makepoint(
       case when p.email = 'shop1@test.com' then 85.3140
@@ -89,19 +89,19 @@ select
            when p.email = 'shop2@test.com' then 27.6760
            else 27.6720 end
     ), 4326
-  )::extensions.geography,
-  10000,
+  )::extensions.geography as location,
+  10000 as delivery_radius_meters,
   case when p.email = 'shop1@test.com' then 45
        when p.email = 'shop2@test.com' then 50
-       else 55 end,
+       else 55 end as estimated_delivery_minutes,
   case when p.email = 'shop1@test.com' then 100
        when p.email = 'shop2@test.com' then 120
-       else 150 end,
-  0.10000,
-  'active',
-  false,
-  p.id,
-  now() - interval '30 days'
+       else 150 end as base_delivery_fee,
+  0.10000 as commission_rate,
+  'active' as status,
+  false as is_demo,
+  p.id as owner_id,
+  now() - interval '30 days' as created_at
 from vendor_profiles p
 on conflict (id) do update set
   status = excluded.status,

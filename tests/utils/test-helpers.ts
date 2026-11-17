@@ -1,4 +1,4 @@
-import { Page, Locator, expect, APIRequestContext, APIRequest } from '@playwright/test';
+import { Page, Locator, expect, APIRequestContext } from '@playwright/test';
 
 export const TEST_USERS = {
   customer: { email: 'customer@test.com', password: 'TestPass123!' },
@@ -9,7 +9,23 @@ export const TEST_USERS = {
 
 export type TestUserRole = keyof typeof TEST_USERS;
 
-const BASE_URL = 'http://localhost:3000';
+const BASE_URL = process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:8080';
+
+// Extract Supabase project reference from URL for correct cookie names
+function getSupabaseCookiePrefix(): string {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://hhavjnfgedskwomdbpsj.supabase.co';
+  const match = supabaseUrl.match(/https:\/\/([^.]+)\.supabase\.co/);
+  const projectRef = match ? match[1] : 'hhavjnfgedskwomdbpsj';
+  return `sb-${projectRef}`;
+}
+
+function getAuthCookieNames() {
+  const prefix = getSupabaseCookiePrefix();
+  return {
+    accessToken: `${prefix}-auth-token`,
+    refreshToken: `${prefix}-refresh-token`,
+  };
+}
 
 async function getSessionViaAPI(request: APIRequestContext, role: TestUserRole) {
   const user = TEST_USERS[role];
@@ -18,6 +34,13 @@ async function getSessionViaAPI(request: APIRequestContext, role: TestUserRole) 
   const loginResponse = await request.post(`${BASE_URL}/api/mobile/auth/login`, {
     data: { email: user.email, password: user.password },
   });
+  
+  // Check if response is JSON
+  const contentType = loginResponse.headers()['content-type'] || '';
+  if (!contentType.includes('application/json')) {
+    const text = await loginResponse.text();
+    throw new Error(`Expected JSON response from login, got HTML: ${text.substring(0, 200)}`);
+  }
   
   const loginData = await loginResponse.json();
   
@@ -36,6 +59,12 @@ async function getSessionViaAPI(request: APIRequestContext, role: TestUserRole) 
     },
   });
   
+  const signupContentType = signupResponse.headers()['content-type'] || '';
+  if (!signupContentType.includes('application/json')) {
+    const text = await signupResponse.text();
+    throw new Error(`Expected JSON response from signup, got HTML: ${text.substring(0, 200)}`);
+  }
+  
   const signupData = await signupResponse.json();
   if (!signupData.success) {
     throw new Error(`Failed to authenticate ${role}: ${signupData.error || loginData.error}`);
@@ -45,32 +74,30 @@ async function getSessionViaAPI(request: APIRequestContext, role: TestUserRole) 
 }
 
 async function authenticateViaAPI(page: Page, role: TestUserRole) {
-  // Create a temporary request context if not provided
-  const request = await page.context().request.fetch('about:blank').catch(() => null);
-  // Actually, we can use page.request which is available
   const apiRequest = page.request;
   
   const session = await getSessionViaAPI(apiRequest as any, role);
   
-  // Set cookies
+  // Set cookies with correct Supabase SSR cookie names and url (not domain)
+  const cookieNames = getAuthCookieNames();
   await page.context().addCookies([
     {
-      name: 'sb-access-token',
+      name: cookieNames.accessToken,
       value: session.access_token,
-      domain: 'localhost',
-      path: '/',
-      httpOnly: false,
+      url: BASE_URL,
+      httpOnly: true,
       secure: false,
       sameSite: 'Lax',
+      maxAge: 60 * 60 * 24 * 365,
     },
     {
-      name: 'sb-refresh-token',
+      name: cookieNames.refreshToken,
       value: session.refresh_token,
-      domain: 'localhost',
-      path: '/',
-      httpOnly: false,
+      url: BASE_URL,
+      httpOnly: true,
       secure: false,
       sameSite: 'Lax',
+      maxAge: 60 * 60 * 24 * 365,
     },
   ]);
   
@@ -80,16 +107,19 @@ async function authenticateViaAPI(page: Page, role: TestUserRole) {
 export async function login(page: Page, role: TestUserRole, request?: APIRequestContext) {
   const user = TEST_USERS[role];
   
-  // If we have request context, use API to get session
-  if (request) {
-    const session = await getSessionViaAPI(request, role);
+  // Use API to get session - this is the ONLY supported method for automated tests
+  const apiRequest = request || page.request;
+  
+  try {
+    const session = await getSessionViaAPI(apiRequest, role);
     
+    const cookieNames = getAuthCookieNames();
     await page.context().addCookies([
-      { name: 'sb-access-token', value: session.access_token, domain: 'localhost', path: '/', httpOnly: false, secure: false, sameSite: 'Lax' },
-      { name: 'sb-refresh-token', value: session.refresh_token, domain: 'localhost', path: '/', httpOnly: false, secure: false, sameSite: 'Lax' },
+      { name: cookieNames.accessToken, value: session.access_token, url: BASE_URL, httpOnly: true, secure: false, sameSite: 'Lax', maxAge: 60 * 60 * 24 * 365 },
+      { name: cookieNames.refreshToken, value: session.refresh_token, url: BASE_URL, httpOnly: true, secure: false, sameSite: 'Lax', maxAge: 60 * 60 * 24 * 365 },
     ]);
     
-    // Navigate to verify
+    // Navigate to verify session works
     const possibleUrls = ['/account', '/vendor', '/admin', '/rider'];
     for (const url of possibleUrls) {
       try {
@@ -99,67 +129,12 @@ export async function login(page: Page, role: TestUserRole, request?: APIRequest
         }
       } catch {}
     }
-  } else {
-    // Use page's built-in request context for API auth
-    try {
-      await authenticateViaAPI(page, role);
-      // Verify by navigating to a protected page
-      const possibleUrls = ['/account', '/vendor', '/admin', '/rider'];
-      for (const url of possibleUrls) {
-        try {
-          await page.goto(url, { waitUntil: 'networkidle', timeout: 15000 });
-          if (!page.url().includes('/login')) {
-            return;
-          }
-        } catch {}
-      }
-    } catch (e) {
-      console.warn('API auth failed, falling back to web form:', e);
-    }
-  }
-  
-  // Fallback to web login (magic link form) - for cases where API isn't available
-  await page.goto('/login', { waitUntil: 'networkidle', timeout: 30000 });
-  
-  // Check if it's the magic link form (email only)
-  const emailInput = page.locator('input[type="email"], input[name="email"]#sign-in-email, input[id="sign-in-email"]').first();
-  
-  if (await emailInput.isVisible({ timeout: 5000 })) {
-    // Magic link form - we can't use this in tests without email access
-    console.warn('Magic link form detected - tests should use API authentication');
-    throw new Error('Magic link authentication not supported in automated tests. Use API login.');
-  }
-  
-  // Traditional password form (fallback)
-  const passwordInput = page.locator('input[type="password"], input[name="password"]').first();
-  const submitButton = page.locator('button[type="submit"]').first();
-  
-  if (await passwordInput.isVisible({ timeout: 5000 })) {
-    await emailInput.fill(user.email);
-    await passwordInput.fill(user.password);
-    await submitButton.click();
     
-    const possibleUrls = ['/account', '/vendor', '/admin', '/rider'];
-    let redirected = false;
-    for (const url of possibleUrls) {
-      try {
-        await page.waitForURL(new RegExp(url), { timeout: 15000 });
-        redirected = true;
-        break;
-      } catch {}
-    }
-    
-    if (!redirected) {
-      const currentUrl = page.url();
-      if (currentUrl.includes('/login')) {
-        throw new Error(`Login failed for ${role} - still on login page`);
-      }
-    }
-  } else {
-    throw new Error('No recognized login form found');
+    throw new Error(`API auth succeeded but session not valid for ${role}`);
+  } catch (e) {
+    console.error(`API authentication failed for ${role}:`, e);
+    throw new Error(`API authentication required for ${role}. Magic link authentication is not supported in automated tests.`);
   }
-  
-  await page.waitForTimeout(1000);
 }
 
 export async function signup(page: Page, role: TestUserRole) {
@@ -177,49 +152,27 @@ export async function signup(page: Page, role: TestUserRole) {
       },
     });
     
+    const contentType = response.headers()['content-type'] || '';
+    if (!contentType.includes('application/json')) {
+      throw new Error('Signup API did not return JSON');
+    }
+    
     const data = await response.json();
     if (data.success && data.data.session) {
+      const cookieNames = getAuthCookieNames();
       await page.context().addCookies([
-        { name: 'sb-access-token', value: data.data.session.access_token, domain: 'localhost', path: '/', httpOnly: false, secure: false, sameSite: 'Lax' },
-        { name: 'sb-refresh-token', value: data.data.session.refresh_token, domain: 'localhost', path: '/', httpOnly: false, secure: false, sameSite: 'Lax' },
+        { name: cookieNames.accessToken, value: data.data.session.access_token, url: BASE_URL, httpOnly: true, secure: false, sameSite: 'Lax', maxAge: 60 * 60 * 24 * 365 },
+        { name: cookieNames.refreshToken, value: data.data.session.refresh_token, url: BASE_URL, httpOnly: true, secure: false, sameSite: 'Lax', maxAge: 60 * 60 * 24 * 365 },
       ]);
       
       await page.goto('/account', { waitUntil: 'networkidle', timeout: 30000 });
       return;
     }
   } catch (e) {
-    console.warn('API signup failed, falling back to web form');
+    console.warn('API signup failed:', e);
   }
   
-  // Fallback to web form (if available)
-  await page.goto('/login', { waitUntil: 'networkidle' });
-  
-  const signupLink = page.locator('a:has-text("Sign up"), a:has-text("Register"), a:has-text("Create account")').first();
-  if (await signupLink.isVisible({ timeout: 5000 })) {
-    await signupLink.click();
-  } else {
-    await page.goto('/signup', { waitUntil: 'networkidle' }).catch(() => {});
-  }
-  
-  await page.fill('input[name="email"]', user.email);
-  await page.fill('input[name="password"]', user.password);
-  await page.fill('input[name="confirmPassword"]', user.password);
-  await page.fill('input[name="fullName"]', `Test ${role.charAt(0).toUpperCase() + role.slice(1)}`);
-  await page.fill('input[name="phone"]', '9800000000');
-  await page.click('button[type="submit"]');
-  
-  await page.waitForURL(/\/account|\/vendor|\/admin|\/rider/, { timeout: 60000 });
-  await page.waitForTimeout(1000);
-}
-
-export async function waitForToast(page: Page, text: string, timeout = 15000) {
-  try {
-    await expect(page.locator(`[role="status"]:has-text("${text}"), [role="alert"]:has-text("${text}"), .toast:has-text("${text}")`))
-      .toBeVisible({ timeout });
-    return true;
-  } catch {
-    return false;
-  }
+  throw new Error('API signup required. Magic link authentication is not supported in automated tests.');
 }
 
 export async function waitForElement(page: Page, selector: string, timeout = 15000) {
@@ -238,59 +191,46 @@ export function getByTestId(page: Page, testId: string): Locator {
 export async function fillForm(page: Page, fields: Record<string, string>) {
   for (const [name, value] of Object.entries(fields)) {
     const input = page.locator(`input[name="${name}"], textarea[name="${name}"], select[name="${name}"]`).first();
-    try {
-      await input.waitFor({ state: 'visible', timeout: 5000 });
-      const tagName = await input.evaluate(el => el.tagName.toLowerCase());
-      if (tagName === 'select') {
-        await input.selectOption(value);
-      } else {
-        await input.fill(value);
-      }
-    } catch {
-      console.warn(`Could not fill field: ${name}`);
+    if (await input.isVisible({ timeout: 5000 }).catch(() => false)) {
+      await input.fill(value);
     }
   }
 }
 
-export async function expectSuccessToast(page: Page, message: string) {
-  await expect(page.locator('.toast-success, [role="status"]').filter({ hasText: message })).toBeVisible({ timeout: 15000 });
+export async function safeFill(page: Page, selector: string, value: string, options: { timeout?: number; force?: boolean } = {}) {
+  const locator = page.locator(selector).first();
+  await locator.waitFor({ state: 'visible', timeout: options.timeout || 20000 });
+  await locator.fill(value, { force: options.force });
 }
 
-export async function expectErrorToast(page: Page, message: string) {
-  await expect(page.locator('.toast-error, [role="alert"]').filter({ hasText: message })).toBeVisible({ timeout: 15000 });
+export async function safeClick(page: Page, selector: string, options: { timeout?: number; force?: boolean } = {}) {
+  const locator = page.locator(selector).first();
+  await locator.waitFor({ state: 'visible', timeout: options.timeout || 20000 });
+  await locator.click({ force: options.force });
 }
 
-export async function safeClick(page: Page, selector: string, timeout = 10000) {
+export async function waitForToast(page: Page, messageFragment: string, timeout = 15000): Promise<boolean> {
   try {
-    const locator = page.locator(selector).first();
-    await locator.waitFor({ state: 'visible', timeout });
-    await locator.click({ timeout: 5000 });
+    await expect(page.locator(`[role="status"]:has-text("${messageFragment}"), .toast:has-text("${messageFragment}"), .vendor-action-message:has-text("${messageFragment}"), .inventory-row-message:has-text("${messageFragment}"), .rider-message:has-text("${messageFragment}")`)).toBeVisible({ timeout });
     return true;
   } catch {
     return false;
   }
 }
 
-export async function safeFill(page: Page, selector: string, value: string, timeout = 10000) {
-  try {
-    const locator = page.locator(selector).first();
-    await locator.waitFor({ state: 'visible', timeout });
-    await locator.fill(value);
-    return true;
-  } catch {
-    return false;
-  }
+// Helper to wait for page to fully load after navigation
+export async function waitForPageLoad(page: Page, timeout = 30000) {
+  await page.waitForLoadState('networkidle', { timeout });
+  await page.waitForTimeout(1000); // Additional buffer for hydration
 }
 
-export const VENDOR_ORDER_STATUSES = [
-  'pending', 'confirmed', 'preparing', 'ready_for_pickup',
-  'picked_up', 'out_for_delivery', 'delivered', 'cancelled', 'rejected'
-] as const;
-
-export const RIDER_DELIVERY_STATUSES = [
-  'offered', 'accepted', 'declined', 'picked_up', 'delivered', 'cancelled'
-] as const;
-
-export function normalizeStatus(status: string): string {
-  return status.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z_]/g, '');
+// Helper to wait for authentication to settle
+export async function waitForAuth(page: Page, timeout = 30000) {
+  // Wait for any redirects to complete
+  await page.waitForLoadState('networkidle', { timeout });
+  // Check if we're on a login page (auth failed)
+  if (page.url().includes('/login')) {
+    const bodyText = await page.locator('body').innerText().catch(() => '');
+    console.log(`WARNING: Redirected to login page. Body: ${bodyText.substring(0, 500)}`);
+  }
 }

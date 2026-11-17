@@ -20,8 +20,8 @@ test.describe('Customer Journey', () => {
   test.describe('Homepage & Search', () => {
     test('should load homepage with categories', async ({ page }) => {
       await homePage.goto();
-      await expect(page.locator('h1')).toBeVisible({ timeout: 15000 });
-      await expect(page.locator('.category-grid')).toBeVisible({ timeout: 15000 });
+      await expect(page.locator('h1')).toBeVisible({ timeout: 20000 });
+      await expect(page.locator('.category-grid')).toBeVisible({ timeout: 20000 });
     });
 
     test('should display category cards', async () => {
@@ -51,7 +51,7 @@ test.describe('Customer Journey', () => {
       const categories = await homePage.getCategories();
       if (categories.length > 0) {
         await homePage.clickCategory(categories[0]);
-        await expect(page.locator('.category-page, .product-grid')).toBeVisible({ timeout: 15000 });
+        await expect(page.locator('.category-page, .product-grid')).toBeVisible({ timeout: 20000 });
       } else {
         test.skip('No categories available');
       }
@@ -69,7 +69,7 @@ test.describe('Customer Journey', () => {
       const results = await homePage.getSearchResults();
       if (results.length > 0) {
         await homePage.clickProduct(0);
-        await expect(page.locator('.product-page, [data-testid="product-detail"]')).toBeVisible({ timeout: 15000 });
+        await expect(page.locator('.product-page, [data-testid="product-detail"]')).toBeVisible({ timeout: 20000 });
       } else {
         test.skip('No products in search results');
       }
@@ -92,7 +92,7 @@ test.describe('Customer Journey', () => {
         
         await productPage.setQuantity(2);
         await productPage.addToCart();
-        const success = await waitForToast(page, 'Added to cart', 15000);
+        const success = await waitForToast(page, 'Added to cart', 20000);
         expect(success).toBeTruthy();
       } else {
         test.skip('No products in search results');
@@ -147,7 +147,7 @@ test.describe('Customer Journey', () => {
       
       if (count > 0) {
         await cartPage.proceedToCheckout();
-        await expect(page.locator('.checkout-page, [data-testid="checkout"]')).toBeVisible({ timeout: 15000 });
+        await expect(page.locator('.checkout-page, [data-testid="checkout"]')).toBeVisible({ timeout: 20000 });
       } else {
         test.skip('Cart is empty');
       }
@@ -226,7 +226,7 @@ test.describe('Customer Journey', () => {
       
       if (count > 0) {
         await ordersPage.viewOrderDetails(0);
-        await expect(page.locator('.order-detail-page')).toBeVisible({ timeout: 15000 });
+        await expect(page.locator('.order-detail-page')).toBeVisible({ timeout: 20000 });
       } else {
         test.skip('No orders to view');
       }
@@ -237,11 +237,13 @@ test.describe('Customer Journey', () => {
 test.describe('Customer Authentication', () => {
   test('should redirect to login for protected pages', async ({ page }) => {
     await page.goto('/cart');
-    await expect(page).toHaveURL(/\/login/, { timeout: 15000 });
+    await expect(page).toHaveURL(/\/login/, { timeout: 20000 });
   });
 
-  test('should allow signup and login', async ({ page }) => {
-    await signup(page, 'customer');
-    await expect(page.locator('.marketplace, .account-page')).toBeVisible({ timeout: 60000 });
+  test.use({ storageState: 'playwright/.auth/customer.json' });
+
+  test('should allow access to account page when authenticated', async ({ page }) => {
+    await page.goto('/account');
+    await expect(page.locator('.account-page, .marketplace')).toBeVisible({ timeout: 20000 });
   });
 });

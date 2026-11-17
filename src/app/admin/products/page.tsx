@@ -18,7 +18,6 @@ import {
 } from "@/components/admin/bulk-action-toolbar";
 import { ExportButton } from "@/components/admin/export-button";
 
-export const metadata: Metadata = { title: "Products - Admin", robots: { index: false, follow: false } };
 
 type Category = {
   id: string;
@@ -70,8 +69,8 @@ function ProductsTable({
     {
       label: "Activate",
       icon: "✅",
-      action: async (ids: string[]) => {
-        const result = await bulkToggleProductStatus(ids, true);
+      action: async (id: string) => {
+        const result = await bulkToggleProductStatus([id], true);
         return { success: result.successCount > 0, error: result.errors.join(", ") || undefined };
       },
       successMessage: "{count} product(s) activated",
@@ -83,8 +82,8 @@ function ProductsTable({
     {
       label: "Deactivate",
       icon: "⛔",
-      action: async (ids: string[]) => {
-        const result = await bulkToggleProductStatus(ids, false);
+      action: async (id: string) => {
+        const result = await bulkToggleProductStatus([id], false);
         return { success: result.successCount > 0, error: result.errors.join(", ") || undefined };
       },
       successMessage: "{count} product(s) deactivated",

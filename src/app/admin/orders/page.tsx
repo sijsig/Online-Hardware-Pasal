@@ -7,7 +7,6 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { ExportButton } from "@/components/admin/export-button";
 
-export const metadata: Metadata = { title: "Orders - Admin", robots: { index: false, follow: false } };
 
 type Order = {
   id: string;

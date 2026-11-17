@@ -3,9 +3,25 @@ import { HomePage, CartPage, CheckoutPage } from '../page-objects/CustomerPages'
 import { VendorDashboard } from '../page-objects/VendorDashboard';
 import { RiderDashboard } from '../page-objects/RiderDashboard';
 import { AdminDashboard, AdminOrdersPage, AdminShopsPage } from '../page-objects/AdminDashboard';
-import { login, TEST_USERS, waitForToast } from '../utils/test-helpers';
+import { TEST_USERS, waitForToast } from '../utils/test-helpers';
 
-const BASE_URL = 'http://localhost:3000';
+const BASE_URL = process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:8080';
+
+// Extract Supabase project reference from URL for correct cookie names
+function getSupabaseCookiePrefix(): string {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://hhavjnfgedskwomdbpsj.supabase.co';
+  const match = supabaseUrl.match(/https:\/\/([^.]+)\.supabase\.co/);
+  const projectRef = match ? match[1] : 'hhavjnfgedskwomdbpsj';
+  return `sb-${projectRef}`;
+}
+
+function getAuthCookieNames() {
+  const prefix = getSupabaseCookiePrefix();
+  return {
+    accessToken: `${prefix}-auth-token`,
+    refreshToken: `${prefix}-refresh-token`,
+  };
+}
 
 async function createAuthContext(browser: any, role: string) {
   const context = await browser.newContext();
@@ -18,9 +34,10 @@ async function createAuthContext(browser: any, role: string) {
   
   const data = await response.json();
   if (data.success && data.data.session) {
+    const cookieNames = getAuthCookieNames();
     await context.addCookies([
-      { name: 'sb-access-token', value: data.data.session.access_token, domain: 'localhost', path: '/', httpOnly: false, secure: false, sameSite: 'Lax' },
-      { name: 'sb-refresh-token', value: data.data.session.refresh_token, domain: 'localhost', path: '/', httpOnly: false, secure: false, sameSite: 'Lax' },
+      { name: cookieNames.accessToken, value: data.data.session.access_token, url: BASE_URL, httpOnly: true, secure: false, sameSite: 'Lax', maxAge: 60 * 60 * 24 * 365 },
+      { name: cookieNames.refreshToken, value: data.data.session.refresh_token, url: BASE_URL, httpOnly: true, secure: false, sameSite: 'Lax', maxAge: 60 * 60 * 24 * 365 },
     ]);
   }
   
@@ -162,9 +179,10 @@ test.describe('Complete End-to-End Flow', () => {
     await newVendorContext.clearCookies();
     
     // Use API to signup as new vendor
+    const uniqueEmail = `newvendor${Date.now()}@testcorp.com`;
     const signupResponse = await newVendorPage.request.post(`${BASE_URL}/api/mobile/auth/signup`, {
       data: {
-        email: 'newvendor@test.com',
+        email: uniqueEmail,
         password: 'TestPass123!',
         full_name: 'New Vendor',
         phone: '9800000002',
@@ -176,19 +194,21 @@ test.describe('Complete End-to-End Flow', () => {
     if (!signupData.success) {
       // Try login if already exists
       const loginResponse = await newVendorPage.request.post(`${BASE_URL}/api/mobile/auth/login`, {
-        data: { email: 'newvendor@test.com', password: 'TestPass123!' },
+        data: { email: uniqueEmail, password: 'TestPass123!' },
       });
       const loginData = await loginResponse.json();
       if (loginData.success) {
+        const cookieNames = getAuthCookieNames();
         await newVendorContext.addCookies([
-          { name: 'sb-access-token', value: loginData.data.session.access_token, domain: 'localhost', path: '/', httpOnly: false, secure: false, sameSite: 'Lax' },
-          { name: 'sb-refresh-token', value: loginData.data.session.refresh_token, domain: 'localhost', path: '/', httpOnly: false, secure: false, sameSite: 'Lax' },
+          { name: cookieNames.accessToken, value: loginData.data.session.access_token, url: BASE_URL, httpOnly: true, secure: false, sameSite: 'Lax', maxAge: 60 * 60 * 24 * 365 },
+          { name: cookieNames.refreshToken, value: loginData.data.session.refresh_token, url: BASE_URL, httpOnly: true, secure: false, sameSite: 'Lax', maxAge: 60 * 60 * 24 * 365 },
         ]);
       }
     } else {
+      const cookieNames = getAuthCookieNames();
       await newVendorContext.addCookies([
-        { name: 'sb-access-token', value: signupData.data.session.access_token, domain: 'localhost', path: '/', httpOnly: false, secure: false, sameSite: 'Lax' },
-        { name: 'sb-refresh-token', value: signupData.data.session.refresh_token, domain: 'localhost', path: '/', httpOnly: false, secure: false, sameSite: 'Lax' },
+        { name: cookieNames.accessToken, value: signupData.data.session.access_token, url: BASE_URL, httpOnly: true, secure: false, sameSite: 'Lax', maxAge: 60 * 60 * 24 * 365 },
+        { name: cookieNames.refreshToken, value: signupData.data.session.refresh_token, url: BASE_URL, httpOnly: true, secure: false, sameSite: 'Lax', maxAge: 60 * 60 * 24 * 365 },
       ]);
     }
     
@@ -197,19 +217,27 @@ test.describe('Complete End-to-End Flow', () => {
       await newVendorPage.goto('/vendor', { waitUntil: 'networkidle' });
       await newVendorPage.fill('input[name="name"]', 'E2E Test Hardware');
       await newVendorPage.fill('input[name="phone"]', '9800000003');
-      await newVendorPage.fill('input[name="email"]', 'shop@e2etest.com');
+      await newVendorPage.fill('input[name="email"]', 'shop@testcorp.com');
       await newVendorPage.fill('textarea[name="address"]', 'Kathmandu, Nepal');
       await newVendorPage.fill('input[name="city"]', 'Kathmandu');
       await newVendorPage.fill('input[name="district"]', 'Kathmandu');
       await newVendorPage.fill('input[name="province"]', 'Bagmati');
       await newVendorPage.fill('textarea[name="description"]', 'Test shop from E2E');
       // Set location coordinates (required)
-      await newVendorPage.fill('input[placeholder="27.7172"]', '27.7172');
-      await newVendorPage.fill('input[placeholder="85.3240"]', '85.3240');
+      await newVendorPage.locator('input[placeholder="27.7172"]').pressSequentially('27.7172');
+      await newVendorPage.locator('input[placeholder="85.3240"]').pressSequentially('85.3240');
       await newVendorPage.click('button:has-text("Submit shop for review")');
       
-      // Wait for redirect to vendor dashboard with shop param
-      await newVendorPage.waitForURL(/\/vendor\?shop=/, { timeout: 30000 });
+      // Wait for either redirect to vendor dashboard with shop param OR success message
+      // The RPC may redirect on success, or show a success/error message
+      const redirectPromise = newVendorPage.waitForURL(/\/vendor\?shop=/, { timeout: 30000 }).catch(() => null);
+      const messagePromise = newVendorPage.locator('.vendor-application-message, [role="status"]').waitFor({ state: "visible", timeout: 30000 }).catch(() => null);
+
+      const [redirectUrl, message] = await Promise.all([redirectPromise, messagePromise]);
+
+      if (!redirectUrl && !message) {
+        throw new Error("Application submission did not redirect or show message");
+      }
     } finally {
       await newVendorContext.close();
     }

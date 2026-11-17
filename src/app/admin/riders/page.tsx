@@ -24,7 +24,6 @@ import {
 import { ExportButton } from "@/components/admin/export-button";
 import { RIDER_STATUS_CONFIG, RIDER_APP_STATUS_CONFIG } from "@/types/admin";
 
-export const metadata: Metadata = { title: "Riders - Admin", robots: { index: false, follow: false } };
 
 type Rider = {
   id: string;  // maps to user_id
@@ -65,8 +64,8 @@ function RidersTable({
     {
       label: "Approve",
       icon: "✅",
-      action: async (ids: string[]) => {
-        const result = await bulkApproveRiders(ids);
+      action: async (id: string) => {
+        const result = await bulkApproveRiders([id]);
         return { success: result.successCount > 0, error: result.errors.join(", ") || undefined };
       },
       successMessage: "{count} rider(s) approved successfully",
@@ -78,8 +77,8 @@ function RidersTable({
     {
       label: "Reject",
       icon: "❌",
-      action: async (ids: string[]) => {
-        const result = await bulkRejectRiders(ids);
+      action: async (id: string) => {
+        const result = await bulkRejectRiders([id]);
         return { success: result.successCount > 0, error: result.errors.join(", ") || undefined };
       },
       successMessage: "{count} rider(s) rejected",
@@ -91,8 +90,8 @@ function RidersTable({
     {
       label: "Set Available",
       icon: "🟢",
-      action: async (ids: string[]) => {
-        const result = await bulkUpdateRiderStatus(ids, "available");
+      action: async (id: string) => {
+        const result = await bulkUpdateRiderStatus([id], "available");
         return { success: result.successCount > 0, error: result.errors.join(", ") || undefined };
       },
       successMessage: "{count} rider(s) set to available",
@@ -104,8 +103,8 @@ function RidersTable({
     {
       label: "Set Offline",
       icon: "⚫",
-      action: async (ids: string[]) => {
-        const result = await bulkUpdateRiderStatus(ids, "offline");
+      action: async (id: string) => {
+        const result = await bulkUpdateRiderStatus([id], "offline");
         return { success: result.successCount > 0, error: result.errors.join(", ") || undefined };
       },
       successMessage: "{count} rider(s) set to offline",
@@ -117,8 +116,8 @@ function RidersTable({
     {
       label: "Suspend",
       icon: "⛔",
-      action: async (ids: string[]) => {
-        const result = await bulkUpdateRiderStatus(ids, "suspended");
+      action: async (id: string) => {
+        const result = await bulkUpdateRiderStatus([id], "suspended");
         return { success: result.successCount > 0, error: result.errors.join(", ") || undefined };
       },
       successMessage: "{count} rider(s) suspended",
@@ -320,12 +319,14 @@ export default function RidersPage() {
     }
   }
 
-  async function handleUpdateStatus(id: string, status: "offline" | "available" | "busy" | "suspended") {
+  async function handleUpdateStatus(id: string, status: "offline" | "available" | "busy" | "suspended"): Promise<{ success: boolean }> {
     try {
       await updateRiderStatus(id, status);
       setRiders(prev => prev.map(r => r.user_id === id ? { ...r, status } : r));
+      return { success: true };
     } catch (error) {
       console.error("Failed to update rider status:", error);
+      return { success: false };
     }
   }
 

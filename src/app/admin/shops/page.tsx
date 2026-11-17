@@ -26,7 +26,6 @@ import {
 import { ExportButton } from "@/components/admin/export-button";
 import { SHOP_STATUS_CONFIG } from "@/types/admin";
 
-export const metadata: Metadata = { title: "Shops - Admin", robots: { index: false, follow: false } };
 
 type Shop = {
   id: string;
@@ -88,8 +87,8 @@ function ShopsTable({
     {
       label: "Approve",
       icon: "✅",
-      action: async (ids: string[]) => {
-        const result = await bulkApproveShops(ids);
+      action: async (id: string) => {
+        const result = await bulkApproveShops([id]);
         return { success: result.successCount > 0, error: result.errors.join(", ") || undefined };
       },
       successMessage: "{count} shop(s) approved successfully",
@@ -101,8 +100,8 @@ function ShopsTable({
     {
       label: "Reject",
       icon: "❌",
-      action: async (ids: string[]) => {
-        const result = await bulkRejectShops(ids);
+      action: async (id: string) => {
+        const result = await bulkRejectShops([id]);
         return { success: result.successCount > 0, error: result.errors.join(", ") || undefined };
       },
       successMessage: "{count} shop(s) rejected",
@@ -114,8 +113,8 @@ function ShopsTable({
     {
       label: "Suspend",
       icon: "⛔",
-      action: async (ids: string[]) => {
-        const result = await bulkSuspendShops(ids);
+      action: async (id: string) => {
+        const result = await bulkSuspendShops([id]);
         return { success: result.successCount > 0, error: result.errors.join(", ") || undefined };
       },
       successMessage: "{count} shop(s) suspended",
@@ -127,8 +126,8 @@ function ShopsTable({
     {
       label: "Activate",
       icon: "✅",
-      action: async (ids: string[]) => {
-        const result = await bulkActivateShops(ids);
+      action: async (id: string) => {
+        const result = await bulkActivateShops([id]);
         return { success: result.successCount > 0, error: result.errors.join(", ") || undefined };
       },
       successMessage: "{count} shop(s) activated",

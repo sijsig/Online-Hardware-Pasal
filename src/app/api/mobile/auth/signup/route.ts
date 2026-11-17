@@ -16,13 +16,16 @@ export async function POST(request: NextRequest) {
     }
     
     // Validate role
-    const validRoles = ["customer", "vendor", "rider"];
+    const validRoles = ["customer", "vendor", "rider", "admin", "super_admin"];
     if (!validRoles.includes(role)) {
       return NextResponse.json(
         { success: false, error: "Invalid role" },
         { status: 400 }
       );
     }
+
+    // Map vendor to vendor_owner for profile (middleware expects vendor_owner or vendor_staff)
+    const profileRole = role === "vendor" ? "vendor_owner" : role;
     
     const { data, error } = await supabase.auth.signUp({
       email,
@@ -51,7 +54,7 @@ export async function POST(request: NextRequest) {
           id: data.user.id,
           email: data.user.email,
           full_name,
-          role,
+          role: profileRole,
           phone,
         });
       

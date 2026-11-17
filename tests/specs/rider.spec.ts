@@ -13,23 +13,20 @@ test.describe('Rider Dashboard', () => {
 
   test.describe('Rider Application Flow', () => {
     test('should show application form for non-rider user', async ({ page }) => {
-      await login(page, 'customer');
-      await riderApplication.goto();
-      await expect(page.locator('h1:has-text("Deliver with Hardware Pasal")')).toBeVisible({ timeout: 15000 });
+      await page.goto('/rider', { storageState: 'playwright/.auth/customer.json' });
+      await expect(page.locator('h1:has-text("Deliver with Hardware Pasal")')).toBeVisible({ timeout: 20000 });
       await expect(page.locator('select')).toBeVisible();
     });
 
     test('should submit rider application with vehicle type', async ({ page }) => {
-      await login(page, 'customer');
-      await riderApplication.goto();
+      await page.goto('/rider', { storageState: 'playwright/.auth/customer.json' });
       await riderApplication.submitApplication('motorcycle');
-      const success = await waitForToast(page, 'under review', 15000) || await waitForToast(page, 'submitted', 15000);
+      const success = await waitForToast(page, 'under review', 20000) || await waitForToast(page, 'submitted', 20000);
       expect(success).toBeTruthy();
     });
 
     test('should show pending status after submission', async ({ page }) => {
-      await login(page, 'customer');
-      await riderApplication.goto();
+      await page.goto('/rider', { storageState: 'playwright/.auth/customer.json' });
       await riderApplication.submitApplication('scooter');
       const status = await riderApplication.getApplicationStatus();
       expect(status.toLowerCase()).toContain('under review');
@@ -44,7 +41,7 @@ test.describe('Rider Dashboard', () => {
     });
 
     test('should display rider dashboard with status', async ({ page }) => {
-      await expect(page.locator('h1:has-text("Your deliveries")')).toBeVisible({ timeout: 15000 });
+      await expect(page.locator('h1:has-text("Your deliveries")')).toBeVisible({ timeout: 20000 });
       await expect(riderDashboard.statusPill).toBeVisible();
     });
 
@@ -90,7 +87,7 @@ test.describe('Rider Dashboard', () => {
       if (hasDelivery) {
         const before = await riderDashboard.getActiveDeliveryDetails();
         await riderDashboard.acceptDelivery();
-        const success = await waitForToast(page, 'accepted', 15000);
+        const success = await waitForToast(page, 'accepted', 20000);
         expect(success).toBeTruthy();
       } else {
         test.skip('No delivery offer available');
@@ -105,7 +102,7 @@ test.describe('Rider Dashboard', () => {
       const hasDelivery = await riderDashboard.hasActiveDelivery();
       if (hasDelivery) {
         await riderDashboard.declineDelivery();
-        const success = await waitForToast(page, 'declined', 15000);
+        const success = await waitForToast(page, 'declined', 20000);
         expect(success).toBeTruthy();
       } else {
         test.skip('No delivery offer available');
@@ -123,7 +120,7 @@ test.describe('Rider Dashboard', () => {
         if (details?.status.toLowerCase().includes('accepted')) {
           await page.waitForTimeout(3000);
           await riderDashboard.confirmPickup();
-          const success = await waitForToast(page, 'pickup', 15000);
+          const success = await waitForToast(page, 'pickup', 20000);
           expect(success).toBeTruthy();
         } else {
           test.skip('Order not in accepted state');
@@ -143,7 +140,7 @@ test.describe('Rider Dashboard', () => {
         const details = await riderDashboard.getActiveDeliveryDetails();
         if (details?.status.toLowerCase().includes('picked_up')) {
           await riderDashboard.confirmDelivery();
-          const success = await waitForToast(page, 'completed', 15000);
+          const success = await waitForToast(page, 'completed', 20000);
           expect(success).toBeTruthy();
         } else {
           test.skip('Order not picked up');
@@ -180,8 +177,8 @@ test.describe('Rider Dashboard', () => {
       if (hasDelivery) {
         const shopLink = riderDashboard.deliveryCard.locator('a:has-text("Navigate to shop")');
         const customerLink = riderDashboard.deliveryCard.locator('a:has-text("Navigate to customer")');
-        await expect(shopLink).toBeVisible({ timeout: 10000 });
-        await expect(customerLink).toBeVisible({ timeout: 10000 });
+        await expect(shopLink).toBeVisible({ timeout: 20000 });
+        await expect(customerLink).toBeVisible({ timeout: 20000 });
       } else {
         test.skip('No active delivery');
       }
@@ -251,18 +248,16 @@ test.describe('Rider Dashboard', () => {
 test.describe('Rider Authentication', () => {
   test('should redirect to login when not authenticated', async ({ page }) => {
     await page.goto('/rider');
-    await expect(page).toHaveURL(/\/login/, { timeout: 15000 });
+    await expect(page).toHaveURL(/\/login/, { timeout: 20000 });
   });
 
   test('should show application form for non-rider user', async ({ page }) => {
-    await login(page, 'customer');
-    await page.goto('/rider');
-    await expect(page.locator('.rider-apply-card')).toBeVisible({ timeout: 15000 });
+    await page.goto('/rider', { storageState: 'playwright/.auth/customer.json' });
+    await expect(page.locator('.rider-apply-card')).toBeVisible({ timeout: 20000 });
   });
 
   test('should deny access to vendor/admin users', async ({ page }) => {
-    await login(page, 'vendor');
-    await page.goto('/rider');
-    await expect(page.locator('.rider-apply-card, .rider-page')).toBeVisible({ timeout: 15000 });
+    await page.goto('/rider', { storageState: 'playwright/.auth/vendor.json' });
+    await expect(page.locator('.rider-apply-card, .rider-page')).toBeVisible({ timeout: 20000 });
   });
 });

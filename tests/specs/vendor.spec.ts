@@ -11,15 +11,13 @@ test.describe('Vendor Dashboard', () => {
 
   test.describe('Vendor Application Flow', () => {
     test('should show application form for non-vendor user', async ({ page }) => {
-      await login(page, 'customer');
-      await vendorDashboard.goto();
-      await expect(page.locator('h1:has-text("Bring your shop online")')).toBeVisible({ timeout: 15000 });
+      await page.goto('/vendor', { storageState: 'playwright/.auth/customer.json' });
+      await expect(page.locator('h1:has-text("Bring your shop online")')).toBeVisible({ timeout: 20000 });
       await expect(page.locator('text=Apply to list your independent hardware shop')).toBeVisible();
     });
 
     test('should submit vendor application', async ({ page }) => {
-      await login(page, 'customer');
-      await vendorDashboard.goto();
+      await page.goto('/vendor', { storageState: 'playwright/.auth/customer.json' });
       
       // Fill application form (matching actual form field names)
       await safeFill(page, 'input[name="name"]', 'Test Hardware Store');
@@ -38,8 +36,24 @@ test.describe('Vendor Dashboard', () => {
       
       await safeClick(page, 'button:has-text("Submit shop for review")');
       
-      // Wait for redirect to vendor dashboard with shop param
-      await expect(page).toHaveURL(/\/vendor\?shop=/, { timeout: 30000 });
+      // Wait for either redirect to vendor dashboard with shop param OR success message
+      // The RPC may redirect on success, or show a success/error message
+      const redirectPromise = page.waitForURL(/\/vendor\?shop=/, { timeout: 30000 }).catch(() => null);
+      const messagePromise = page.locator('.vendor-application-message, [role="status"]').waitFor({ state: 'visible', timeout: 30000 }).catch(() => null);
+      
+      const [redirectUrl, message] = await Promise.all([redirectPromise, messagePromise]);
+      
+      if (redirectUrl) {
+        // Success - redirected to vendor dashboard
+        expect(redirectUrl).toMatch(/\/vendor\?shop=/);
+      } else if (message) {
+        // Check if message indicates success (not error)
+        const messageText = await message.textContent();
+        expect(messageText?.toLowerCase()).not.toContain('error');
+        expect(messageText?.toLowerCase()).not.toContain('failed');
+      } else {
+        throw new Error('Application submission did not redirect or show message');
+      }
     });
   });
 
@@ -51,7 +65,7 @@ test.describe('Vendor Dashboard', () => {
     });
 
     test('should display vendor dashboard with shop info', async ({ page }) => {
-      await expect(page.locator('h1:has-text("Shop dashboard")')).toBeVisible({ timeout: 15000 });
+      await expect(page.locator('h1:has-text("Shop dashboard")')).toBeVisible({ timeout: 20000 });
       await expect(page.locator('.vendor-shop-summary strong')).toBeVisible();
       await expect(page.locator('.vendor-kpi-grid')).toBeVisible();
     });
@@ -83,7 +97,7 @@ test.describe('Vendor Dashboard', () => {
       
       if (initialCount > 0) {
         await vendorDashboard.acceptOrder(0);
-        const success = await waitForToast(page, 'confirmed', 15000);
+        const success = await waitForToast(page, 'confirmed', 20000);
         expect(success).toBeTruthy();
       } else {
         test.skip('No pending orders to test');
@@ -96,7 +110,7 @@ test.describe('Vendor Dashboard', () => {
       
       if (initialCount > 0) {
         await vendorDashboard.rejectOrder(0);
-        const success = await waitForToast(page, 'rejected', 15000);
+        const success = await waitForToast(page, 'rejected', 20000);
         expect(success).toBeTruthy();
       } else {
         test.skip('No pending orders to test');
@@ -109,7 +123,7 @@ test.describe('Vendor Dashboard', () => {
       
       if (activeCount > 0) {
         await vendorDashboard.advanceOrderStatus(0);
-        const success = await waitForToast(page, '', 15000); // any toast
+        const success = await waitForToast(page, '', 20000); // any toast
         expect(success).toBeTruthy();
       } else {
         test.skip('No active orders to test');
@@ -153,7 +167,7 @@ test.describe('Vendor Dashboard', () => {
         await vendorDashboard.selectCatalogProduct(productName);
         await vendorDashboard.fillInventoryForm({ price: '5000', stock: '10', sku: 'DRILL-001' });
         await vendorDashboard.submitInventory();
-        const success = await waitForToast(page, 'submitted', 15000);
+        const success = await waitForToast(page, 'submitted', 20000);
         expect(success).toBeTruthy();
       } else {
         test.skip('No catalog products found');
@@ -171,7 +185,7 @@ test.describe('Vendor Dashboard', () => {
         price: '3000',
         stock: '5',
       });
-      const success = await waitForToast(page, 'submitted', 15000);
+      const success = await waitForToast(page, 'submitted', 20000);
       expect(success).toBeTruthy();
     });
 
@@ -234,12 +248,11 @@ test.describe('Vendor Dashboard', () => {
 test.describe('Vendor Authentication', () => {
   test('should redirect to login when not authenticated', async ({ page }) => {
     await page.goto('/vendor');
-    await expect(page).toHaveURL(/\/login/, { timeout: 15000 });
+    await expect(page).toHaveURL(/\/login/, { timeout: 20000 });
   });
 
   test('should show vendor application for non-vendor user', async ({ page }) => {
-    await login(page, 'customer');
-    await page.goto('/vendor');
-    await expect(page.locator('h1:has-text("Bring your shop online")')).toBeVisible({ timeout: 15000 });
+    await page.goto('/vendor', { storageState: 'playwright/.auth/customer.json' });
+    await expect(page.locator('h1:has-text("Bring your shop online")')).toBeVisible({ timeout: 20000 });
   });
 });

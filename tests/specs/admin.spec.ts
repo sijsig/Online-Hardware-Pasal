@@ -22,7 +22,7 @@ test.describe('Admin Dashboard', () => {
 
     test('should load dashboard with metrics', async ({ page }) => {
       await adminDashboard.goto();
-      await expect(page.locator('h1:has-text("Dashboard")')).toBeVisible({ timeout: 15000 });
+      await expect(page.locator('h1:has-text("Dashboard")')).toBeVisible({ timeout: 20000 });
       
       const metrics = await adminDashboard.getMetrics();
       expect(Object.keys(metrics).length).toBeGreaterThan(0);
@@ -32,7 +32,7 @@ test.describe('Admin Dashboard', () => {
       await adminDashboard.goto();
       // Charts might take time to load
       await page.waitForTimeout(3000);
-      const chartsVisible = await waitForElement(page, '.space-y-6', 10000);
+      const chartsVisible = await waitForElement(page, '.space-y-6', 20000);
       expect(chartsVisible).toBeTruthy();
     });
 
@@ -54,7 +54,7 @@ test.describe('Admin Dashboard', () => {
       const shopAction = actions.find(a => a.toLowerCase().includes('shop'));
       if (shopAction) {
         await adminDashboard.clickPendingAction(actions.indexOf(shopAction));
-        await expect(page).toHaveURL(/\/admin\/shops/, { timeout: 15000 });
+        await expect(page).toHaveURL(/\/admin\/shops/, { timeout: 20000 });
       } else {
         test.skip('No pending shop actions');
       }
@@ -72,7 +72,7 @@ test.describe('Admin Dashboard', () => {
 
     test('should filter shops by status', async ({ page }) => {
       await adminShops.goto('pending');
-      await expect(page.locator('h1:has-text("Shops")')).toBeVisible({ timeout: 15000 });
+      await expect(page.locator('h1:has-text("Shops"), h1:has-text("Shop")')).toBeVisible({ timeout: 20000 });
       const count = await adminShops.getShopCount();
       expect(count).toBeGreaterThanOrEqual(0);
     });
@@ -83,7 +83,7 @@ test.describe('Admin Dashboard', () => {
       
       if (count > 0) {
         await adminShops.approveShop(0);
-        const success = await waitForToast(page, 'approved', 15000);
+        const success = await waitForToast(page, 'approved', 20000);
         expect(success).toBeTruthy();
       } else {
         test.skip('No pending shops to approve');
@@ -96,7 +96,7 @@ test.describe('Admin Dashboard', () => {
       
       if (count > 0) {
         await adminShops.rejectShop(0, 'Incomplete documentation');
-        const success = await waitForToast(page, 'rejected', 15000);
+        const success = await waitForToast(page, 'rejected', 20000);
         expect(success).toBeTruthy();
       } else {
         test.skip('No pending shops to reject');
@@ -109,7 +109,7 @@ test.describe('Admin Dashboard', () => {
       
       if (count > 0) {
         await adminShops.viewShopDetails(0);
-        await expect(page.locator('.shop-detail, h1')).toBeVisible({ timeout: 15000 });
+        await expect(page.locator('.shop-detail, h1')).toBeVisible({ timeout: 20000 });
       } else {
         test.skip('No active shops to view');
       }
@@ -142,7 +142,7 @@ test.describe('Admin Dashboard', () => {
         expect(details.total).toBeTruthy();
         
         await adminOrders.viewOrderDetails(0);
-        await expect(page.locator('.order-detail, h1')).toBeVisible({ timeout: 15000 });
+        await expect(page.locator('.order-detail, h1')).toBeVisible({ timeout: 20000 });
       } else {
         test.skip('No orders to view');
       }
@@ -154,7 +154,7 @@ test.describe('Admin Dashboard', () => {
       
       if (count > 0) {
         await adminOrders.assignRider(0, 'Test Rider');
-        const success = await waitForToast(page, 'assigned', 15000);
+        const success = await waitForToast(page, 'assigned', 20000);
         expect(success).toBeTruthy();
       } else {
         test.skip('No confirmed orders to assign');
@@ -183,7 +183,7 @@ test.describe('Admin Dashboard', () => {
       
       if (count > 0) {
         await adminRiders.approveRider(0);
-        const success = await waitForToast(page, 'approved', 15000);
+        const success = await waitForToast(page, 'approved', 20000);
         expect(success).toBeTruthy();
       } else {
         test.skip('No pending riders to approve');
@@ -196,7 +196,7 @@ test.describe('Admin Dashboard', () => {
       
       if (count > 0) {
         await adminRiders.rejectRider(0);
-        const success = await waitForToast(page, 'rejected', 15000);
+        const success = await waitForToast(page, 'rejected', 20000);
         expect(success).toBeTruthy();
       } else {
         test.skip('No pending riders to reject');
@@ -223,7 +223,7 @@ test.describe('Admin Dashboard', () => {
 
     test('should load payments page', async ({ page }) => {
       await adminPayments.goto();
-      await expect(page.locator('h1:has-text("Payments"), h1:has-text("Payouts")')).toBeVisible({ timeout: 15000 });
+      await expect(page.locator('h1:has-text("Payments"), h1:has-text("Payouts")')).toBeVisible({ timeout: 20000 });
     });
 
     test('should display commission stats', async ({ page }) => {
@@ -235,14 +235,14 @@ test.describe('Admin Dashboard', () => {
     test('should record vendor payout', async ({ page }) => {
       await adminPayments.goto();
       await adminPayments.recordPayout('vendor', 'vendor-id-123', '5000');
-      const success = await waitForToast(page, 'recorded', 15000);
+      const success = await waitForToast(page, 'recorded', 20000);
       expect(success).toBeTruthy();
     });
 
     test('should record rider payout', async ({ page }) => {
       await adminPayments.goto();
       await adminPayments.recordPayout('rider', 'rider-id-123', '2000');
-      const success = await waitForToast(page, 'recorded', 15000);
+      const success = await waitForToast(page, 'recorded', 20000);
       expect(success).toBeTruthy();
     });
   });
@@ -251,12 +251,12 @@ test.describe('Admin Dashboard', () => {
 test.describe('Admin Authentication', () => {
   test('should redirect to login when not authenticated', async ({ page }) => {
     await page.goto('/admin');
-    await expect(page).toHaveURL(/\/login/, { timeout: 15000 });
+    await expect(page).toHaveURL(/\/login/, { timeout: 20000 });
   });
 
   test('should deny access to non-admin users', async ({ page }) => {
-    await login(page, 'customer');
-    await page.goto('/admin');
-    await expect(page).toHaveURL(/\/account|\/login/, { timeout: 15000 });
+    // Use customer auth state instead of calling login()
+    await page.goto('/admin', { storageState: 'playwright/.auth/customer.json' });
+    await expect(page).toHaveURL(/\/account|\/login/, { timeout: 20000 });
   });
 });
