@@ -1,4 +1,5 @@
 import { Page, Locator, expect, APIRequestContext } from '@playwright/test';
+import { createSupabaseSSRCookies } from './supabase-cookie-helper';
 
 export const TEST_USERS = {
   customer: { email: 'customer@test.com', password: 'TestPass123!' },
@@ -11,20 +12,15 @@ export type TestUserRole = keyof typeof TEST_USERS;
 
 const BASE_URL = process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:8080';
 
-// Extract Supabase project reference from URL for correct cookie names
-function getSupabaseCookiePrefix(): string {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://hhavjnfgedskwomdbpsj.supabase.co';
-  const match = supabaseUrl.match(/https:\/\/([^.]+)\.supabase\.co/);
-  const projectRef = match ? match[1] : 'hhavjnfgedskwomdbpsj';
-  return `sb-${projectRef}`;
-}
+// Admin client for user management
+const { createClient } = require('@supabase/supabase-js');
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://hhavjnfgedskwomdbpsj.supabase.co';
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
-function getAuthCookieNames() {
-  const prefix = getSupabaseCookiePrefix();
-  return {
-    accessToken: `${prefix}-auth-token`,
-    refreshToken: `${prefix}-refresh-token`,
-  };
+function getAdminSupabase() {
+  return createClient(supabaseUrl, supabaseServiceKey, {
+    auth: { autoRefreshToken: false, persistSession: false }
+  });
 }
 
 async function getSessionViaAPI(request: APIRequestContext, role: TestUserRole) {
@@ -76,30 +72,16 @@ async function getSessionViaAPI(request: APIRequestContext, role: TestUserRole) 
 async function authenticateViaAPI(page: Page, role: TestUserRole) {
   const apiRequest = page.request;
   
-  const session = await getSessionViaAPI(apiRequest as any, role);
+  const session = await getSessionViaAPI(apiRequest, role);
   
-  // Set cookies with correct Supabase SSR cookie names and url (not domain)
-  const cookieNames = getAuthCookieNames();
-  await page.context().addCookies([
-    {
-      name: cookieNames.accessToken,
-      value: session.access_token,
-      url: BASE_URL,
-      httpOnly: true,
-      secure: false,
-      sameSite: 'Lax',
-      maxAge: 60 * 60 * 24 * 365,
-    },
-    {
-      name: cookieNames.refreshToken,
-      value: session.refresh_token,
-      url: BASE_URL,
-      httpOnly: true,
-      secure: false,
-      sameSite: 'Lax',
-      maxAge: 60 * 60 * 24 * 365,
-    },
-  ]);
+  // Set cookies with correct Supabase SSR cookie format
+  const ssrCookies = createSupabaseSSRCookies({
+    access_token: session.access_token,
+    refresh_token: session.refresh_token,
+    expires_at: session.expires_at,
+    user: { id: session.user.id, email: session.user.email }, // minimal user object
+  });
+  await page.context().addCookies(ssrCookies);
   
   return session;
 }
@@ -111,13 +93,25 @@ export async function login(page: Page, role: TestUserRole, request?: APIRequest
   const apiRequest = request || page.request;
   
   try {
-    const session = await getSessionViaAPI(apiRequest, role);
+    // Get session via API
+    const loginResponse = await apiRequest.post(`${BASE_URL}/api/mobile/auth/login`, {
+      data: { email: user.email, password: user.password },
+    });
     
-    const cookieNames = getAuthCookieNames();
-    await page.context().addCookies([
-      { name: cookieNames.accessToken, value: session.access_token, url: BASE_URL, httpOnly: true, secure: false, sameSite: 'Lax', maxAge: 60 * 60 * 24 * 365 },
-      { name: cookieNames.refreshToken, value: session.refresh_token, url: BASE_URL, httpOnly: true, secure: false, sameSite: 'Lax', maxAge: 60 * 60 * 24 * 365 },
-    ]);
+    const loginData = await loginResponse.json();
+    if (!loginData.success) {
+      throw new Error(`Login failed for ${role}: ${loginData.error}`);
+    }
+    
+    const session = loginData.data.session;
+    
+    const ssrCookies = createSupabaseSSRCookies({
+      access_token: session.access_token,
+      refresh_token: session.refresh_token,
+      expires_at: session.expires_at,
+      user: loginData.data.user,
+    });
+    await page.context().addCookies(ssrCookies);
     
     // Navigate to verify session works
     const possibleUrls = ['/account', '/vendor', '/admin', '/rider'];
@@ -159,11 +153,13 @@ export async function signup(page: Page, role: TestUserRole) {
     
     const data = await response.json();
     if (data.success && data.data.session) {
-      const cookieNames = getAuthCookieNames();
-      await page.context().addCookies([
-        { name: cookieNames.accessToken, value: data.data.session.access_token, url: BASE_URL, httpOnly: true, secure: false, sameSite: 'Lax', maxAge: 60 * 60 * 24 * 365 },
-        { name: cookieNames.refreshToken, value: data.data.session.refresh_token, url: BASE_URL, httpOnly: true, secure: false, sameSite: 'Lax', maxAge: 60 * 60 * 24 * 365 },
-      ]);
+      const ssrCookies = createSupabaseSSRCookies({
+        access_token: data.data.session.access_token,
+        refresh_token: data.data.session.refresh_token,
+        expires_at: data.data.session.expires_at,
+        user: data.data.user,
+      });
+      await page.context().addCookies(ssrCookies);
       
       await page.goto('/account', { waitUntil: 'networkidle', timeout: 30000 });
       return;

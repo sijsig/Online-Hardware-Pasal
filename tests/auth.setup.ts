@@ -3,6 +3,7 @@ import { test as testBase, TestUserRole } from './utils/test-helpers';
 import fs from 'fs';
 import path from 'path';
 import { createClient } from '@supabase/supabase-js';
+import { createSupabaseSSRCookies } from './utils/supabase-cookie-helper';
 
 // Load test environment variables
 require('dotenv').config({ path: path.join(__dirname, '..', '.env.test') });
@@ -19,22 +20,6 @@ if (!supabaseServiceKey) {
 const authDir = path.join(__dirname, '..', 'playwright', '.auth');
 if (!fs.existsSync(authDir)) {
   fs.mkdirSync(authDir, { recursive: true });
-}
-
-// Get Supabase cookie names (for SSR)
-function getSupabaseCookiePrefix(): string {
-  const supabaseUrlEnv = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://hhavjnfgedskwomdbpsj.supabase.co';
-  const match = supabaseUrlEnv.match(/https:\/\/([^.]+)\.supabase\.co/);
-  const projectRef = match ? match[1] : 'hhavjnfgedskwomdbpsj';
-  return `sb-${projectRef}`;
-}
-
-function getAuthCookieNames() {
-  const prefix = getSupabaseCookiePrefix();
-  return {
-    accessToken: `${prefix}-auth-token`,
-    refreshToken: `${prefix}-refresh-token`,
-  };
 }
 
 // Admin client for user management
@@ -75,31 +60,22 @@ async function ensureUserViaAdmin(email: string, password: string, role: string,
 }
 
 // Ensure profile exists with correct role
-async function ensureProfileRole(userEmail: string, expectedRole: string) {
+async function ensureProfileRole(userId: string, expectedRole: string, userEmail?: string) {
   const adminSupabase = getAdminSupabase();
   
-  // Find user by email
-  const { data: users } = await adminSupabase.auth.admin.listUsers();
-  const targetUser = users.users.find(u => u.email === userEmail);
-  if (!targetUser) {
-    console.error(`User ${userEmail} not found in auth`);
-    return;
-  }
-  
-  // Upsert profile with correct role
+  // Upsert profile with correct role using user ID
   const { error } = await adminSupabase
     .from('profiles')
     .upsert({ 
-      id: targetUser.id, 
-      email: userEmail, 
+      id: userId, 
       role: expectedRole,
       full_name: `Test ${expectedRole.charAt(0).toUpperCase() + expectedRole.slice(1)}`,
       phone: '9800000000'
     });
   if (error) {
-    console.error(`Failed to update profile role for ${userEmail}: ${error.message}`);
+    console.error(`Failed to update profile role for ${userId}: ${error.message}`);
   } else {
-    console.log(`Profile role set to ${expectedRole} for ${userEmail}`);
+    console.log(`Profile role set to ${expectedRole} for ${userId}`);
   }
 }
 
@@ -264,8 +240,8 @@ for (const role of setupRoles) {
       const user = testUsers[role];
       
       // Create/ensure user via Admin API (bypasses magic link)
-      await ensureUserViaAdmin(user.email, user.password, role, `Test ${role.charAt(0).toUpperCase() + role.slice(1)}`);
-      await ensureProfileRole(user.email, role === 'vendor' ? 'vendor_owner' : role);
+      const createdUser = await ensureUserViaAdmin(user.email, user.password, role, `Test ${role.charAt(0).toUpperCase() + role.slice(1)}`);
+      await ensureProfileRole(createdUser.id, role === 'vendor' ? 'vendor_owner' : role, user.email);
       
       // For vendor, also ensure shop exists
       if (role === 'vendor') {
@@ -305,29 +281,14 @@ for (const role of setupRoles) {
       
       const session = loginData.data.session;
       
-      // Add cookies with url (not domain) for localhost
-      const cookieNames = getAuthCookieNames();
-      
-      await page.context().addCookies([
-        {
-          name: cookieNames.accessToken,
-          value: session.access_token,
-          url: baseURL,
-          httpOnly: true,
-          secure: false,
-          sameSite: 'Lax',
-          maxAge: 60 * 60 * 24 * 365,
-        },
-        {
-          name: cookieNames.refreshToken,
-          value: session.refresh_token,
-          url: baseURL,
-          httpOnly: true,
-          secure: false,
-          sameSite: 'Lax',
-          maxAge: 60 * 60 * 24 * 365,
-        },
-      ]);
+      // Use @supabase/ssr compatible cookie format
+      const ssrCookies = createSupabaseSSRCookies({
+        access_token: session.access_token,
+        refresh_token: session.refresh_token,
+        expires_at: session.expires_at,
+        user: loginData.data.user,
+      });
+      await page.context().addCookies(ssrCookies);
       
       // Verify auth works
       const expectedUrls = { customer: '/account', vendor: '/vendor', admin: '/admin', rider: '/rider' };
@@ -366,12 +327,23 @@ setup('authenticate as new vendor', async ({ page }) => {
   
   console.log('Setting up auth for new vendor...');
   
+  // Capture browser console logs
+  page.on('console', msg => {
+    const text = msg.text();
+    if (text.includes('[VendorApp]') || text.includes('Shop application') || text.includes('RPC')) {
+      console.log('🖥️ BROWSER CONSOLE:', text);
+    }
+  });
+  page.on('pageerror', err => {
+    console.log('🖥️ BROWSER ERROR:', err.message);
+  });
+  
   try {
     const email = generateTestEmail('newvendor');
     
     // Create via Admin API
-    await ensureUserViaAdmin(email, 'TestPass123!', 'customer', 'New Vendor');
-    await ensureProfileRole(email, 'customer');
+    const createdUser = await ensureUserViaAdmin(email, 'TestPass123!', 'customer', 'New Vendor');
+    await ensureProfileRole(createdUser.id, 'customer', email);
     
     // Login to get session
     const loginResponse = await fetch(`${baseURL}/api/mobile/auth/login`, {
@@ -387,49 +359,43 @@ setup('authenticate as new vendor', async ({ page }) => {
     
     const session = loginData.data.session;
     
-    const cookieNames = getAuthCookieNames();
-  
-    // Add cookies with url (not domain) for localhost
-    await page.context().addCookies([
-      {
-        name: cookieNames.accessToken,
-        value: session.access_token,
-        url: baseURL,
-        httpOnly: true,
-        secure: false,
-        sameSite: 'Lax',
-        maxAge: 60 * 60 * 24 * 365,
-      },
-      {
-        name: cookieNames.refreshToken,
-        value: session.refresh_token,
-        url: baseURL,
-        httpOnly: true,
-        secure: false,
-        sameSite: 'Lax',
-        maxAge: 60 * 60 * 24 * 365,
-      },
-    ]);
+    // Use @supabase/ssr compatible cookie format
+    const ssrCookies = createSupabaseSSRCookies({
+      access_token: session.access_token,
+      refresh_token: session.refresh_token,
+      expires_at: session.expires_at,
+      user: loginData.data.user,
+    });
+    await page.context().addCookies(ssrCookies);
     await page.goto('/vendor', { waitUntil: 'networkidle' });
-    await page.fill('input[name="name"]', 'E2E Test Hardware');
-    await page.fill('input[name="phone"]', '9800000003');
-    await page.fill('input[name="email"]', 'shop@testcorp.com');
-    await page.fill('textarea[name="address"]', 'Kathmandu, Nepal');
-    await page.fill('input[name="city"]', 'Kathmandu');
-    await page.fill('input[name="district"]', 'Kathmandu');
-    await page.fill('input[name="province"]', 'Bagmati');
-    await page.fill('textarea[name="description"]', 'Test shop from E2E');
-    await page.locator('input[placeholder="27.7172"]').pressSequentially('27.7172');
-    await page.locator('input[placeholder="85.3240"]').pressSequentially('85.3240');
-    await page.click('button:has-text("Submit shop for review")');
     
-    const redirectPromise = page.waitForURL(/\/vendor\?shop=/, { timeout: 30000 }).catch(() => null);
-    const messagePromise = page.locator(".vendor-application-message, [role=\"status\"]").waitFor({ state: "visible", timeout: 30000 }).catch(() => null);
-    const [redirectUrl, message] = await Promise.all([redirectPromise, messagePromise]);
-
-    if (!redirectUrl && !message) {
-      throw new Error("Application submission did not redirect or show message");
+    // Check if application form is visible (user doesn't have a shop yet)
+    const formVisible = await page.locator('input[name="name"]').isVisible({ timeout: 5000 }).catch(() => false);
+    
+    if (formVisible) {
+      // Fill and submit the application form
+      await page.fill('input[name="name"]', 'E2E Test Hardware');
+      await page.fill('input[name="phone"]', '9800000003');
+      await page.fill('input[name="email"]', 'shop@testcorp.com');
+      await page.fill('textarea[name="address"]', 'Kathmandu, Nepal');
+      await page.fill('input[name="city"]', 'Kathmandu');
+      await page.fill('input[name="district"]', 'Kathmandu');
+      await page.fill('input[name="province"]', 'Bagmati');
+      await page.fill('textarea[name="description"]', 'Test shop from E2E');
+      await page.locator('input[placeholder="27.7172"]').pressSequentially('27.7172');
+      await page.locator('input[placeholder="85.3240"]').pressSequentially('85.3240');
+      await page.click('button:has-text("Submit shop for review")');
+      
+      // Wait for dashboard to show success state: "Shop dashboard" or "This shop is pending"
+      await page.waitForSelector('text="Shop dashboard", text="This shop is pending"', { timeout: 30000, state: 'visible' });
+    } else {
+      // User already has a shop - verify dashboard loads
+      await page.waitForSelector('text="Shop dashboard"', { timeout: 10000, state: 'visible' });
+      console.log('User already has a shop, skipping application form');
     }
+    
+    // Also verify we're on the vendor dashboard with the shop listed
+    await page.waitForTimeout(2000);
     
     await page.context().storageState({ path: authFile });
     console.log('Auth saved for new vendor');

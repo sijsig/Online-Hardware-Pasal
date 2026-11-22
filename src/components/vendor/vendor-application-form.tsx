@@ -50,7 +50,9 @@ export function VendorApplicationForm({ email }: { email: string }) {
     setSubmitting(true);
     setMessage("");
     try {
-      const { data: vendorId, error } = await createClient().rpc("apply_for_vendor_shop", {
+      const supabase = createClient();
+      console.log("[VendorApp] Supabase client created, making RPC call...");
+      const { data: vendorId, error } = await supabase.rpc("apply_for_vendor_shop", {
         p_name: String(form.get("name") ?? "").trim(),
         p_phone: String(form.get("phone") ?? "").trim(),
         p_email: String(form.get("email") ?? "").trim() || null,
@@ -62,12 +64,28 @@ export function VendorApplicationForm({ email }: { email: string }) {
         p_latitude: latitude,
         p_longitude: longitude,
       });
-      if (error || !vendorId) throw error ?? new Error("Application was not created.");
+      console.log("[VendorApp] RPC result:", { vendorId, error });
+      if (error || !vendorId) {
+        console.error("[VendorApp] RPC error details:", JSON.stringify(error, null, 2));
+        throw error ?? new Error("Application was not created.");
+      }
       router.replace(`/vendor?shop=${vendorId}`);
       router.refresh();
     } catch (error) {
-      console.error("Shop application failed:", error);
-      setMessage(error instanceof Error ? applicationError(error.message) : "We could not submit your application. Please try again.");
+      // Enhanced error logging
+      console.error("[VendorApp] Shop application failed:", error);
+      console.error("[VendorApp] Error type:", typeof error);
+      console.error("[VendorApp] Error constructor:", error?.constructor?.name);
+      console.error("[VendorApp] Error keys:", error ? Object.keys(error) : 'none');
+      console.error("[VendorApp] Error message:", error instanceof Error ? error.message : 'no message');
+      console.error("[VendorApp] Full error:", JSON.stringify(error, null, 2));
+      
+      const errorMessage = error instanceof Error 
+        ? applicationError(error.message) 
+        : (error && typeof error === 'object' && 'message' in error 
+            ? applicationError(String(error.message)) 
+            : "We could not submit your application. Please try again.");
+      setMessage(errorMessage);
     } finally {
       setSubmitting(false);
     }

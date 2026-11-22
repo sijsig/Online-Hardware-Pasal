@@ -3,7 +3,8 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   outputFileTracingRoot: process.cwd(),
   experimental: {
-    turbo: false, // Disable Turbopack due to HMR issues
+    // Enable ESM externals for better compatibility with ESM-only packages
+    esmExternals: true,
   },
 };
 

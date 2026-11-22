@@ -3,9 +3,9 @@ import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, TextInput, 
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors, radius, spacing } from '@/src/theme';
 
-export function Screen({ children, scroll = true, style }: { children: ReactNode; scroll?: boolean; style?: ViewStyle }) {
+export function Screen({ children, scroll = true, style, refreshControl }: { children: ReactNode; scroll?: boolean; style?: ViewStyle; refreshControl?: React.ReactElement<import('react-native').RefreshControlProps> }) {
   return <SafeAreaView style={styles.safe} edges={['top']}>
-    {scroll ? <ScrollView contentContainerStyle={[styles.content, style]} keyboardShouldPersistTaps="handled">{children}</ScrollView> : <View style={[styles.content, style]}>{children}</View>}
+    {scroll ? <ScrollView contentContainerStyle={[styles.content, style]} keyboardShouldPersistTaps="handled" refreshControl={refreshControl}>{children}</ScrollView> : <View style={[styles.content, style]}>{children}</View>}
   </SafeAreaView>;
 }
 

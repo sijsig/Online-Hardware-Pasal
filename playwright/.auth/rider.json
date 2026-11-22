@@ -1,0 +1,25 @@
+{
+  "cookies": [
+    {
+      "name": "sb-hhavjnfgedskwomdbpsj-auth-token",
+      "value": "base64-eyJhY2Nlc3NfdG9rZW4iOiJleUpoYkdjaU9pSkZVekkxTmlJc0ltdHBaQ0k2SW1JeVlqUmlOVFJqTFRFNVpUVXROR00yTkMwNU1ERTJMVEk0WkdKaVlXWXlPRFZrWkNJc0luUjVjQ0k2SWtwWFZDSjkuZXlKcGMzTWlPaUpvZEhSd2N6b3ZMMmhvWVhacWJtWm5aV1J6YTNkdmJXUmljSE5xTG5OMWNHRmlZWE5sTG1OdkwyRjFkR2d2ZGpFaUxDSnpkV0lpT2lKbE0ySTVNRGRsWmkwNFpqbG1MVFEzT0RFdE9EWmlPUzAxT1RCbE1qRXhOV0V6TlRnaUxDSmhkV1FpT2lKaGRYUm9aVzUwYVdOaGRHVmtJaXdpWlhod0lqb3hOemsxTVRBME5EVTVMQ0pwWVhRaU9qRTNPVFV4TURBNE5Ua3NJbVZ0WVdsc0lqb2ljbWxrWlhKQWRHVnpkQzVqYjIwaUxDSndhRzl1WlNJNklpSXNJbUZ3Y0Y5dFpYUmhaR0YwWVNJNmV5SndjbTkyYVdSbGNpSTZJbVZ0WVdsc0lpd2ljSEp2ZG1sa1pYSnpJanBiSW1WdFlXbHNJbDE5TENKMWMyVnlYMjFsZEdGa1lYUmhJanA3SW1WdFlXbHNYM1psY21sbWFXVmtJanAwY25WbExDSm1kV3hzWDI1aGJXVWlPaUpVWlhOMElGSnBaR1Z5SWl3aWNtOXNaU0k2SW5KcFpHVnlJbjBzSW5KdmJHVWlPaUpoZFhSb1pXNTBhV05oZEdWa0lpd2lZV0ZzSWpvaVlXRnNNU0lzSW1GdGNpSTZXM3NpYldWMGFHOWtJam9pY0dGemMzZHZjbVFpTENKMGFXMWxjM1JoYlhBaU9qRTNPVFV4TURBNE5UbDlYU3dpYzJWemMybHZibDlwWkNJNklqSmlaR0ptTURNNUxUazFPR0l0TkdKa1lpMWhOekV3TFRCaVpUWXhOamsyWldFMll5SXNJbWx6WDJGdWIyNTViVzkxY3lJNlptRnNjMlY5LjRqYlhiTktBWFdKeUF0T0dKWE1oVGNsaEgzNVhwWHhINE9IZVgzXzBQR05VR25sSVlvN1BDdzdTTi0yOU5ISFZRNmhpNGNucmpqam1FYjVLbi1Fc0NnIiwicmVmcmVzaF90b2tlbiI6InNtcjZpb3M2bmR5diIsImV4cGlyZXNfaW4iOjM1OTksImV4cGlyZXNfYXQiOjE3OTUxMDQ0NTksInRva2VuX3R5cGUiOiJiZWFyZXIiLCJ1c2VyIjp7ImlkIjoiZTNiOTA3ZWYtOGY5Zi00NzgxLTg2YjktNTkwZTIxMTVhMzU4IiwiZW1haWwiOiJyaWRlckB0ZXN0LmNvbSJ9fQ",
+      "domain": "localhost",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    }
+  ],
+  "origins": [
+    {
+      "origin": "http://localhost:3000",
+      "localStorage": [
+        {
+          "name": "hardware-online-pasal-cart-v1",
+          "value": "[]"
+        }
+      ]
+    }
+  ]
+}

@@ -12,6 +12,8 @@ export const colors = {
   amberSoft: '#fff5df',
   red: '#a04e3d',
   redSoft: '#fff0eb',
+  blue: '#1a73e8',
+  blueSoft: '#e8f0fe',
 };
 
 export const spacing = { xxs: 4, xs: 8, sm: 12, md: 16, lg: 22, xl: 30, xxl: 40 };
